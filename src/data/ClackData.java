@@ -7,20 +7,20 @@ import java.util.Date;
  *
  * @author Matt Hansen
  */
-public class ClackData {
+public abstract class ClackData {
     private String userName;
     private int type;
     private Date date;
 
     public static final int CONSTANT_LISTUSERS = 0; // gives a list of all users connected to the session
-    public static int CONSTANT_LOGOUT = 1;          // log out -> close the client's connection
-    public static int CONSTANT_SENDMESSAGE = 2;     // send a message
-    public static int CONSTANT_SENDFILE = 3;        // send a file
+    public final int CONSTANT_LOGOUT = 1;          // log out -> close the client's connection
+    public final int CONSTANT_SENDMESSAGE = 2;     // send a message
+    public final int CONSTANT_SENDFILE = 3;        // send a file
 
 
     /**
      * Constructor creates an instance of ClackData based on user-provided username and type. The date is automatically
-     * recorded
+     * recorded. Based on the type will create an object of MessageClackData or FileClackData
      *
      * @param userName The client's username
      * @param type     The current type
@@ -76,7 +76,5 @@ public class ClackData {
         return this.date;
     }
 
-//    public getData () {
-//        // not sure what this is
-//    }
+    public abstract String getData();
 }
