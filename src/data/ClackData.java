@@ -42,7 +42,7 @@ public abstract class ClackData {
     }
 
     /**
-     * Constructor that creates an anonymous user ("Anon") in list users type. The date is automatically
+     * Constructor that creates an anonymous user ("Anon") in listUsers type. The date is automatically
      * recorded.
      */
     public ClackData() {
@@ -55,7 +55,7 @@ public abstract class ClackData {
      * @return The type
      */
     public int getType() {
-        return this.type;
+        return type;
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class ClackData {
      * @return The Username
      */
     public String getUserName() {
-        return this.userName;
+        return userName;
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class ClackData {
      * @return The date
      */
     public Date getDate() {
-        return this.date;
+        return date;
     }
 
     public abstract String getData();

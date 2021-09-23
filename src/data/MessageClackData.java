@@ -23,31 +23,58 @@ public class MessageClackData extends ClackData {
         this.message = message;
     }
 
+    /**
+     * Default constructor creates an instance with an empty message.
+     */
     public MessageClackData() {
         super();
         this.message = "";
     }
 
+    /**
+     * Data accessor
+     *
+     * @return the message
+     */
     public String getData() {
-        return this.message;
+        return message;
     }
 
+    /**
+     * Overrides Object.equals()
+     *
+     * @param other any object
+     *
+     * @return boolean value that returns true iff the object is an instance of MessageClackData with
+     *         an equivalent message
+     */
     @Override
     public boolean equals(Object other) {
+        if (other == null) return false;
         if (!(other instanceof MessageClackData)) return false;
         MessageClackData otherMCD = (MessageClackData)other;
         return this.message.equals(otherMCD.message);
     }
 
+    /**
+     * Overrides Object.hashCode()
+     *
+     * @return returns the hash code of the message string
+     */
     @Override
     public int hashCode() {
         return Objects.hash(message);
     }
 
+    /**
+     * Overrides Object.toString()
+     *
+     * @return String displaying all data contained within the instance of MessageClackData
+     */
     @Override
     public String toString() {
         return "User name: " + getUserName() + "\n" +
                 "Type: " + getType() + "\n" +
-                "Message: " + getData() + "\n\n";
+                "Message: " + message + "\n\n";
     }
 }
