@@ -1,6 +1,6 @@
 package data;
 
-import static java.util.Objects.hash;
+import java.util.Objects;
 
 /**
  * Subclass of ClackData that is used to deal with sending files. Can be of type CONSTANT_SENDFILE.
@@ -101,8 +101,8 @@ public class FileClackData extends ClackData {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 37 * result + hash(fileName);
-        result = 37 * result + hash(fileContents);
+        result = 37 * result + Objects.hash(fileName);
+        result = 37 * result + Objects.hash(fileContents);
         return result;
     }
 

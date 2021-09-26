@@ -2,8 +2,6 @@ package data;
 
 import java.util.Date;
 
-import static java.util.Objects.hash;
-
 /**
  * This is a superclass that represents the data sent between the client and the server.
  *
@@ -18,6 +16,7 @@ public abstract class ClackData {
     public static final int CONSTANT_LOGOUT = 1;        // log out -> close the client's connection
     public static final int CONSTANT_SENDMESSAGE = 2;   // send a message
     public static final int CONSTANT_SENDFILE = 3;      // send a file
+    public static final int DEFAULT_TYPE = -1;          // invalid type to show something went wrong
 
 
     /**
@@ -44,11 +43,11 @@ public abstract class ClackData {
     }
 
     /**
-     * Default constructor creates an anonymous user ("Anon") with invalid type. The date is automatically
-     * recorded.
+     * Default constructor creates an anonymous user ("Anon") with invalid type to show something went wrong. The
+     * default constructor should not be used if everything is working. The date is automatically recorded.
      */
     public ClackData() {
-        this(-1); // need to decide default value, maybe this to show it wasn't instantiated?
+        this(DEFAULT_TYPE); // invalid type to show something went wrong
     }
 
     /**

@@ -1,7 +1,6 @@
 package test;
 
 import data.*;
-import sun.jvm.hotspot.ui.action.MemoryAction;
 
 public class TestClackData {
     public static void main(String[] args) {

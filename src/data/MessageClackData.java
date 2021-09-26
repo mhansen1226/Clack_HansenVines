@@ -2,8 +2,6 @@ package data;
 
 import java.util.Objects;
 
-import static java.util.Objects.hash;
-
 /**
  * Subclass of ClackData that is used to deal with messaging and managing client connection. Can be of type
  * CONSTANT_LISTUSERS, CONSTANT_LOGOUT, or CONSTANT_SENDMESSAGE.
@@ -70,7 +68,7 @@ public class MessageClackData extends ClackData {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 37*result + hash(message);
+        result = 37*result + Objects.hash(message);
         return result;
     }
 
