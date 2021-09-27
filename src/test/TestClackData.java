@@ -2,6 +2,11 @@ package test;
 
 import data.*;
 
+/**
+ * Test class for ClackData
+ *
+ * @author Matt Hansen
+ */
 public class TestClackData {
     public static void main(String[] args) {
         // Testing MessageClackData

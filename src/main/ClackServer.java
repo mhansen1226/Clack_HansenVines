@@ -11,13 +11,13 @@ public class ClackServer {
     private ClackData dataToReceiveFromClient;
     private ClackData dataToSendToClient;
 
-    ClackServer(int port) {
+    public ClackServer(int port) {
         this.port = port;
         dataToReceiveFromClient = null;
         dataToSendToClient = null;
     }
 
-    ClackServer() {
+    public ClackServer() {
         this(7000);
     }
 
@@ -34,10 +34,18 @@ public class ClackServer {
         if (other == null) return false;
         if (!(other instanceof ClackServer)) return false;
         ClackServer otherCS = (ClackServer)other;
+
+        // to avoid errors when data variables are null, returns true if null until it gets fixed in the future
+        boolean data = true;
+        if (dataToReceiveFromClient != null)
+            data = data && dataToReceiveFromClient.equals(otherCS.dataToReceiveFromClient);
+        if (dataToSendToClient != null)
+            data = data && dataToSendToClient.equals(otherCS.dataToSendToClient);
+
+
         return port == otherCS.port &&
                 closeConnection == otherCS.closeConnection &&
-                dataToReceiveFromClient.equals(otherCS.dataToReceiveFromClient) &&
-                dataToSendToClient.equals(otherCS.dataToSendToClient);
+                data;
     }
 
     @Override
@@ -45,16 +53,27 @@ public class ClackServer {
         int result = 17;
         result = 37*result + port;
         result = 37*result + Objects.hash(closeConnection);
-        result = 37*result + dataToSendToClient.hashCode();
-        result = 37*result + dataToReceiveFromClient.hashCode();
+
+        // to avoid errors when data variables are null, will get fixed in future installments
+        if (dataToSendToClient != null)
+            result = 37*result + dataToSendToClient.hashCode();
+        if (dataToReceiveFromClient != null)
+            result = 37*result + dataToReceiveFromClient.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
+        // to avoid errors when data variables are null, will get fixed in future installments
+        String data = "";
+        if (dataToReceiveFromClient != null)
+            data = "Data to send to client: " + dataToSendToClient.toString() + "\n";
+        if (dataToSendToClient != null)
+            data = data + "Data to receive from client: " + dataToReceiveFromClient.toString();
+
         return "Port: " + port + "\n" +
                 "Close connection? " + closeConnection + "\n" +
-                "Data to send to client: " + dataToSendToClient.toString() + "\n" +
-                "Data to receive from client: " + dataToReceiveFromClient.toString();
+                data;
+
     }
 }
