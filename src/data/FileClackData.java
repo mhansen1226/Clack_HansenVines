@@ -63,15 +63,15 @@ public class FileClackData extends ClackData {
         return null;
     }
 
-//    /**
-//     * Read the contents of the file
-//     */
-//    public void readFileContents();
+    /**
+     * Read the contents of the file
+     */
+    public void readFileContents() {}
 
-//    /**
-//     * Write the contents of the file
-//     */
-//    public void writeFileContents();
+    /**
+     * Write the contents of the file
+     */
+    public void writeFileContents() {}
 
 
     /**

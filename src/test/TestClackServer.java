@@ -2,6 +2,11 @@ package test;
 
 import main.ClackServer;
 
+/**
+ * Test class for ClackServer
+ *
+ * @author Matt Hansen
+ */
 public class TestClackServer {
     public static void main(String[] args) {
         ClackServer CS1 = new ClackServer(1000);
