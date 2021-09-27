@@ -3,7 +3,9 @@ package test;
 import main.ClackClient;
 
 /**
+ * Test class to test Clack Client
  *
+ * @author Matt Vines
  */
 
 public class TestClackClient {
