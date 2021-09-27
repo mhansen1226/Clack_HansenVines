@@ -27,7 +27,8 @@ ClackData dataToReceiveFromServer;
      * @param port port number
      *
      */
-    ClackClient(String userName, String hostName, int port) {
+
+    public ClackClient(String userName, String hostName, int port) {
 this.userName = userName;
 this.hostName = hostName;
 this.port = port;
@@ -44,7 +45,7 @@ this.dataToSendToServer = null;
      * @param hostName set to host name
      *
      */
-    ClackClient(String userName, String hostName){
+   public ClackClient(String userName, String hostName){
 this(userName, hostName, 7000);
 }
 
@@ -54,7 +55,7 @@ this(userName, hostName, 7000);
      * closed connection set to false
      * @param userName set to username
      */
-    ClackClient(String userName){
+    public ClackClient(String userName){
         this(userName, "localHost");
 }
 
@@ -65,7 +66,7 @@ this(userName, hostName, 7000);
      * closed connection set to false
      * port is set to 7000
      */
-    ClackClient(){
+    public ClackClient(){
         this("Anon");
 }
 //  public void start(){}
