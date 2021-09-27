@@ -84,10 +84,15 @@ this(userName, hostName, 7000);
         if (other == null) return false;
         if (!(other instanceof ClackClient)) return false;
         ClackClient otherCC = (ClackClient)other;
+        // to avoid errors when data variables are null, returns true if null until it gets fixed in the future
+        boolean data = true;
+        if (dataToReceiveFromServer != null)
+            data = data && dataToReceiveFromServer.equals(otherCC.dataToReceiveFromServer);
+        if (dataToSendToServer != null)
+            data = data && dataToSendToServer.equals(otherCC.dataToSendToServer);
         return port == otherCC.port && closeConnection == otherCC.closeConnection &&
                 userName.equals(otherCC.userName) && hostName.equals(otherCC.hostName) &&
-                dataToSendToServer.equals(otherCC.dataToSendToServer) &&
-                dataToReceiveFromServer.equals(otherCC.dataToReceiveFromServer);
+                data;
     }
 
     @Override
@@ -97,18 +102,26 @@ this(userName, hostName, 7000);
        result = 37*result + userName.hashCode();
        result = 37*result + hostName.hashCode();
        result = 37*result + Objects.hash(closeConnection);
-       result = 37*result + dataToSendToServer.hashCode();
+        // to avoid errors when data variables are null, will get fixed in future installments
+        if (dataToSendToServer != null)
+            result = 37*result + dataToSendToServer.hashCode();
+        if (dataToReceiveFromServer != null)
        result = 37*result + dataToReceiveFromServer.hashCode();
        return result;
     }
 
     @Override
     public String toString(){
+        // to avoid errors when data variables are null, will get fixed in future installments
+        String data = "";
+        if (dataToReceiveFromServer != null)
+            data = "Data to send to server: " + dataToSendToServer.toString() + "\n";
+        if (dataToSendToServer != null)
+            data = data + "Data to receive from server: " + dataToReceiveFromServer.toString();
+
         return "port: " + port + "\n" +
                 "UserName: " + userName + "\n" +
                 "HostName: " + hostName + "\n" +
-                "Close connection? " + closeConnection + "\n" +
-                "Data to send to server: " + dataToSendToServer.toString() + "\n" +
-                "Data to Receive From Server" + dataToReceiveFromServer.toString();
+                "Close connection? " + closeConnection + "\n" + data;
     }
 }
