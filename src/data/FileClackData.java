@@ -73,7 +73,6 @@ public class FileClackData extends ClackData {
      */
     public void writeFileContents() {}
 
-
     /**
      * Overrides Object.equals()
      *
