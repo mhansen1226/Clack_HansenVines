@@ -72,8 +72,31 @@ public class ClackClient {
     }
 
     /**
+     *
+     * Method to encrypt data with the vignere cipher
+     * @param inputStringToEncrypt String to be encrypted
+     * @param key key that is used to encrypt the data
+     * @return Returns The encrypted Data
+     */
+    protected String encrypt( String inputStringToEncrypt, String key ){
+        String encryptData = "";
+        return encryptData;
+    }
+
+    /**
+     * Method to decrypt data encrypted with the vignere cipher
+     * @param inputStringToDecrypt String to decrypt
+     * @param key Key that was used to encrypt data
+     * @return Returns decrypted data
+     */
+    protected String decrypt( String inputStringToDecrypt, String key ){
+        String decryptData = "";
+        return decryptData;
+    }
+    /**
      * Start method. Will be implemented later
      */
+
     public void start() {
     }
 

@@ -10,7 +10,7 @@ import main.ClackClient;
 
 public class TestClackClient {
     public static void main(String[] args) {
-        ClackClient CC1 = new ClackClient("USERNAME","HOSTNAME", 7000);
+        ClackClient CC1 = new ClackClient("USERNAME","HOSTNAME", -7000);
         System.out.println("--- CC1 --- \n" +  CC1);
         System.out.println("getUserName(): " + CC1.getUserName());
         System.out.println("getHostName(): " + CC1.getHostName());
