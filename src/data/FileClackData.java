@@ -1,5 +1,6 @@
 package data;
 
+import java.io.*;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,6 @@ import java.util.Objects;
 public class FileClackData extends ClackData {
     private String fileName;
     private String fileContents;
-
 
     /**
      * Creates an instance of FileClackData according to user provided username, file name, and type.
@@ -60,13 +60,29 @@ public class FileClackData extends ClackData {
      * @return the contents of the file
      */
     public String getData() {
-        return null;
+        return fileContents;
+    }
+
+    public String getData(String key) {
+        return decrypt(fileContents, key);
     }
 
     /**
      * Read the contents of the file
      */
-    public void readFileContents() {}
+    public void readFileContents() throws IOException {
+        try {
+            File myFile = new File(fileName);
+            BufferedReader br = new BufferedReader(new FileReader(myFile));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                fileContents += line + '\n';
+            }
+        } catch (IOException e) {
+            System.err.println( "Issue with reading.");
+        }
+    }
 
     /**
      * Write the contents of the file
@@ -89,7 +105,7 @@ public class FileClackData extends ClackData {
         return (fileName.equals(otherFCD.fileName) &&
                 fileContents.equals(otherFCD.fileContents) &&
                 getType() == otherFCD.getType() &&
-                getUserName().equals(otherFCD.getUserName()));
+                getUsername().equals(otherFCD.getUsername()));
     }
 
     /**
