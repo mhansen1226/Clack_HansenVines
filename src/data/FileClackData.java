@@ -71,6 +71,7 @@ public class FileClackData extends ClackData {
      * Read the contents of the file
      */
     public void readFileContents() throws IOException {
+        fileContents = "";
         try {
             File myFile = new File(fileName);
             BufferedReader br = new BufferedReader(new FileReader(myFile));
@@ -79,10 +80,20 @@ public class FileClackData extends ClackData {
             while ((line = br.readLine()) != null) {
                 fileContents += line + '\n';
             }
+            br.close();
 
-        } catch (IOException e) {
-            System.err.println( "Issue with reading.");
+        } catch (NullPointerException npe) {
+            System.err.println("No file name was provided");
+        } catch (FileNotFoundException fnfe)  {
+            System.err.println("File not found");
+        } catch (IOException ioe) {
+            throw new IOException("Issue with reading");
         }
+    }
+
+    public void readFileContents(String key) throws IOException {
+        readFileContents();
+        fileContents = encrypt(fileContents, key);
     }
 
     /**
