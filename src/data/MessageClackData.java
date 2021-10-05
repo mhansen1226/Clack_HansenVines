@@ -74,7 +74,7 @@ public class MessageClackData extends ClackData {
         MessageClackData otherMCD = (MessageClackData)other;
         return (message.equals(otherMCD.message) &&
                 getType() == otherMCD.getType() &&
-                getUserName().equals(otherMCD.getUserName()));
+                getUsername().equals(otherMCD.getUsername()));
     }
 
     /**

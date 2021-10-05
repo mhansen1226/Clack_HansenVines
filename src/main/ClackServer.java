@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class ClackServer {
 
+    private static final int CONSTANT_DEFAULT_PORT = 7000;
+
     private int port;
     private boolean closeConnection;
     private ClackData dataToReceiveFromClient;
@@ -32,7 +34,7 @@ public class ClackServer {
      * Default constructor that creates an instance of ClackServer with a port number of 7000.
      */
     public ClackServer() {
-        this(7000);
+        this(CONSTANT_DEFAULT_PORT);
     }
 
     /**

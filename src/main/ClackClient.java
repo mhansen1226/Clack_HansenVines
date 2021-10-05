@@ -12,6 +12,8 @@ import java.util.Objects;
  */
 public class ClackClient {
 
+    private static final int CONSTANT_DEFAULT_PORT = 7000;
+
     private String userName;
     private String hostName;
     private int port;
@@ -46,7 +48,7 @@ public class ClackClient {
      * @param hostName set to host name
      */
     public ClackClient(String userName, String hostName) {
-        this(userName, hostName, 7000);
+        this(userName, hostName, CONSTANT_DEFAULT_PORT);
     }
 
     /**
@@ -72,31 +74,8 @@ public class ClackClient {
     }
 
     /**
-     *
-     * Method to encrypt data with the vignere cipher
-     * @param inputStringToEncrypt String to be encrypted
-     * @param key key that is used to encrypt the data
-     * @return Returns The encrypted Data
-     */
-    protected String encrypt( String inputStringToEncrypt, String key ){
-        String encryptData = "";
-        return encryptData;
-    }
-
-    /**
-     * Method to decrypt data encrypted with the vignere cipher
-     * @param inputStringToDecrypt String to decrypt
-     * @param key Key that was used to encrypt data
-     * @return Returns decrypted data
-     */
-    protected String decrypt( String inputStringToDecrypt, String key ){
-        String decryptData = "";
-        return decryptData;
-    }
-    /**
      * Start method. Will be implemented later
      */
-
     public void start() {
     }
 

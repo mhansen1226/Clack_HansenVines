@@ -132,7 +132,7 @@ public abstract class ClackData {
      *
      * @return The Username
      */
-    public String getUserName() {
+    public String getUsername() {
         return userName;
     }
 
