@@ -2,6 +2,9 @@ package data;
 
 import java.util.Date;
 
+import static java.lang.Character.*;
+
+
 /**
  * This is a superclass that represents the data sent between the client and the server.
  *
@@ -51,6 +54,71 @@ public abstract class ClackData {
     }
 
     /**
+     * Implements the Vigenère cipher
+     *
+     * @param inputStringToEncrypt  string to encrypt
+     * @param key                   key used to encrypt
+     * @return                      encrypted string
+     */
+    protected String encrypt(String inputStringToEncrypt, String key) {
+        char[] cString = inputStringToEncrypt.toCharArray();
+        char[] cKey = key.toLowerCase().toCharArray();
+
+        String out = "";
+        int i = 0; int j = 0;
+        while(i < inputStringToEncrypt.length()) {
+            boolean skipForNonLetter = false;
+            char currChar = cString[i];
+            if (!isLetter(currChar))
+                skipForNonLetter = true;
+            char aA = isUpperCase(currChar) ? 'A' : 'a';
+
+            int currKeyCharPos = (cKey[j % key.length()] - 'a');
+            int currStringCharPos = (cString[i] - aA);
+
+            if (!skipForNonLetter) {
+                int newChar = aA + (currStringCharPos + currKeyCharPos) % 26;
+                out += (char) newChar;
+                j++;
+            } else out += cString[i];
+            i++;
+        }
+        return out;
+    }
+
+    /**
+     * Reverses the Vigenère cipher to decrypt a message
+     *
+     * @param inputStringToDecrypt  string to decrypt
+     * @param key                   key used to decrypt
+     * @return                      Decrypted string
+     */
+    protected String decrypt(String inputStringToDecrypt, String key) {
+        char[] cString = inputStringToDecrypt.toCharArray();
+        char[] cKey = key.toLowerCase().toCharArray();
+        String out = "";
+        int i = 0; int j = 0;
+        while(i < inputStringToDecrypt.length()) {
+            boolean skipForNonLetter = false;
+            char currChar = cString[i];
+            if (!isLetter(currChar))
+                skipForNonLetter = true;
+            char aA = isUpperCase(currChar) ? 'A' : 'a';
+
+            int currKeyCharPos = (cKey[j % key.length()] - 'a');
+            int currStringCharPos = (cString[i] - aA);
+
+            if (!skipForNonLetter) {
+                int newChar = aA + (currStringCharPos - currKeyCharPos + 26) % 26;
+                out += (char) newChar;
+                j++;
+            } else out += cString[i];
+            i++;
+        }
+        return out;
+    }
+
+    /**
      * The type accessor
      *
      * @return The type
@@ -78,6 +146,7 @@ public abstract class ClackData {
     }
 
     public abstract String getData();
+    public abstract String getData(String key);
 
     /**
      * Overrides Object.toString()

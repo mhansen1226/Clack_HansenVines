@@ -34,6 +34,20 @@ public class MessageClackData extends ClackData {
     }
 
     /**
+     * Constructor creates an instance of MessageClackData based on user-provided username, message, and type.
+     * Encrypts the message using the provided key.
+     *
+     * @param username  the client's username
+     * @param message   the instant message to be sent
+     * @param key       the encryption key
+     * @param type      the type
+     */
+    public MessageClackData(String username, String message, String key, int type) {
+       super(username, type);
+       this.message = encrypt(message,key);
+    }
+
+    /**
      * Data accessor
      *
      * @return the message
@@ -42,6 +56,9 @@ public class MessageClackData extends ClackData {
         return message;
     }
 
+    public String getData(String key) {
+        return decrypt(message, key);
+    }
     /**
      * Overrides Object.equals()
      *

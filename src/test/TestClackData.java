@@ -2,13 +2,15 @@ package test;
 
 import data.*;
 
+import java.io.IOException;
+
 /**
  * Test class for ClackData
  *
  * @author Matt Hansen
  */
 public class TestClackData {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Testing MessageClackData
         System.out.println("====== Testing MessageClackData ======");
         MessageClackData MCD1 = new MessageClackData("mhansen", "Hello!", 2);
@@ -31,7 +33,7 @@ public class TestClackData {
 
         // Testing FileClackData
         System.out.println("====== Testing FileClackData ======");
-        FileClackData FCD1 = new FileClackData("mhansen", "file.txt", 3);
+        FileClackData FCD1 = new FileClackData("mhansen", "src/data/file.txt", 3);
         System.out.println("--- FCD1 ---\n" + FCD1);
         System.out.println("getFileName(): " + FCD1.getFileName());
         System.out.println("getData(): " + FCD1.getData());
