@@ -79,6 +79,7 @@ public class FileClackData extends ClackData {
             while ((line = br.readLine()) != null) {
                 fileContents += line + '\n';
             }
+
         } catch (IOException e) {
             System.err.println( "Issue with reading.");
         }
