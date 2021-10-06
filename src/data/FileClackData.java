@@ -27,6 +27,36 @@ public class FileClackData extends ClackData {
     }
 
     /**
+     * writes non-decrypted file contents to the file
+     *
+     */
+    public void writeFileContents() {
+        FileWriter writer = null;
+        try{
+            writer = new FileWriter(fileName);
+            writer.write(fileContents);
+            writer.close();
+        }catch (IOException ioe){
+            System.err.println("My message is: "+ ioe.getMessage());
+        }
+    }
+
+    /**
+     * Writes the decrypted file contents to the file
+     * @param key Takes key as input
+     */
+    public void writeFileContents(String key){
+        FileWriter writer = null;
+        try{
+            writer = new FileWriter(fileName);
+            writer.write(decrypt(fileContents,key));
+            writer.close();
+        }catch (IOException ioe){
+            System.err.println("My message is: "+ ioe.getMessage());
+        }
+    }
+
+    /**
      * Default constructor for FileClackData creates an anonymous user ("Anon") in send file type.
      * File name and contents are set to null.
      */
@@ -63,6 +93,11 @@ public class FileClackData extends ClackData {
         return fileContents;
     }
 
+    /**
+     * Takes in data and decrypts
+     * @param key take a key as input
+     * @return returns decrypted data
+     */
     public String getData(String key) {
         return decrypt(fileContents, key);
     }
@@ -85,10 +120,7 @@ public class FileClackData extends ClackData {
         }
     }
 
-    /**
-     * Write the contents of the file
-     */
-    public void writeFileContents() {}
+
 
     /**
      * Overrides Object.equals()
