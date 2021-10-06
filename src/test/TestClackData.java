@@ -48,17 +48,19 @@ public class TestClackData {
         System.out.println("getUsername(): " + FCD1.getUsername());
         System.out.println("getDate(): " + FCD1.getDate());
         System.out.println("getFileName(): " + FCD1.getFileName());
-        System.out.println("getData(): " + FCD1.getData());
         System.out.println("hashCode(): " + FCD1.hashCode() + "\n");
+        FCD1.readFileContents();
+        System.out.println("getData(): " + FCD1.getData());
 
-        FCD1.setFileName("newFile.txt");
+        FCD1.setFileName("src/data/newFile.txt");
         System.out.println("--- Changed fileName FCD1 ---\n" + FCD1);
         System.out.println("getType(): " + FCD1.getType());
         System.out.println("getUsername(): " + FCD1.getUsername());
         System.out.println("getDate(): " + FCD1.getDate());
         System.out.println("getFileName(): " + FCD1.getFileName());
-        System.out.println("getData(): " + FCD1.getData());
         System.out.println("hashCode(): " + FCD1.hashCode() + "\n");
+        FCD1.readFileContents();
+        System.out.println("getData(): " + FCD1.getData());
 
         FileClackData FCD2 = new FileClackData();
         System.out.println("--- FCD2 ---\n" + FCD2);
@@ -68,6 +70,8 @@ public class TestClackData {
         System.out.println("getFileName(): " + FCD2.getFileName());
         System.out.println("getData(): " + FCD2.getData());
         System.out.println("hashCode(): " + FCD2.hashCode() + "\n");
+        FCD2.readFileContents();
+        System.out.println("getData(): " + FCD2.getData());
 
         FCD2.setFileName("newFile.txt");
         System.out.println("--- Changed fileName FCD2 ---\n" + FCD2);
@@ -77,5 +81,7 @@ public class TestClackData {
         System.out.println("getFileName(): " + FCD2.getFileName());
         System.out.println("getData(): " + FCD2.getData());
         System.out.println("hashCode(): " + FCD2.hashCode() + "\n");
+        FCD2.readFileContents();
+        System.out.println("getData(): " + FCD2.getData());
     }
 }
