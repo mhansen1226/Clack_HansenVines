@@ -99,7 +99,6 @@ public class ClackClient {
             dataToReceiveFromServer = dataToSendToServer;
             if (dataToSendToServer != null)
                 printData();
-
         }
     }
 
@@ -126,7 +125,7 @@ public class ClackClient {
 
                 break;
             default:
-                dataToSendToServer = new MessageClackData(userName, inFromStd.nextLine(), ClackData.CONSTANT_SENDMESSAGE);
+                dataToSendToServer = new MessageClackData(userName, input + inFromStd.nextLine(), ClackData.CONSTANT_SENDMESSAGE);
                 break;
         }
 
@@ -147,8 +146,8 @@ public class ClackClient {
      * Method to print data. Will be implemented later
      */
     public void printData() {
-        System.out.println(dataToReceiveFromServer.getUsername() + ":\n");
-        System.out.println(dataToReceiveFromServer.getData());
+        System.out.println(dataToReceiveFromServer.getUsername() + ":");
+        System.out.println("\t" + dataToReceiveFromServer.getData());
     }
 
     /**
