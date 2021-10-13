@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class TestClackData {
     public static void main(String[] args) throws IOException {
+
+        final String CONSTANT_TESTINGKEY = "woah";
         // Testing MessageClackData
         System.out.println("====== Testing MessageClackData ======");
         MessageClackData MCD1 = new MessageClackData("mhansen", "Hello!", 2);
@@ -37,12 +39,21 @@ public class TestClackData {
         System.out.println("getData(): " + MCD3.getData());
         System.out.println("hashCode(): " + MCD3.hashCode() + "\n");
 
+        MessageClackData MCD4 = new MessageClackData("mhansen", "What is up man!", CONSTANT_TESTINGKEY, 2);
+        System.out.println("--- MCD4 ---\n" + MCD4);
+        System.out.println("getType(): " + MCD4.getType());
+        System.out.println("getUsername(): " + MCD4.getUsername());
+        System.out.println("getDate(): " + MCD4.getDate());
+        System.out.println("getData(): " + MCD4.getData());
+        System.out.println("getData(key): " + MCD4.getData(CONSTANT_TESTINGKEY));
+        System.out.println("hashCode(): " + MCD4.hashCode() + "\n");
+
         System.out.println(MCD1.equals(MCD2));
         System.out.println(MCD1.equals(MCD3));
 
         // Testing FileClackData
         System.out.println("====== Testing FileClackData ======");
-        FileClackData FCD1 = new FileClackData("mhansen", "src/data/file.txt", 3);
+        FileClackData FCD1 = new FileClackData("mhansen", "src/test/Part2_document.txt",3);
         System.out.println("--- FCD1 ---\n" + FCD1);
         System.out.println("getType(): " + FCD1.getType());
         System.out.println("getUsername(): " + FCD1.getUsername());
@@ -52,36 +63,36 @@ public class TestClackData {
         FCD1.readFileContents();
         System.out.println("getData(): " + FCD1.getData());
 
-        FCD1.setFileName("src/data/newFile.txt");
+        FCD1.setFileName("src/test/writeFileTest.txt");
         System.out.println("--- Changed fileName FCD1 ---\n" + FCD1);
         System.out.println("getType(): " + FCD1.getType());
         System.out.println("getUsername(): " + FCD1.getUsername());
         System.out.println("getDate(): " + FCD1.getDate());
         System.out.println("getFileName(): " + FCD1.getFileName());
         System.out.println("hashCode(): " + FCD1.hashCode() + "\n");
-        FCD1.readFileContents();
+        FCD1.writeFileContents();
         System.out.println("getData(): " + FCD1.getData());
 
-        FileClackData FCD2 = new FileClackData();
+        FileClackData FCD2 = new FileClackData("mvines", "src/test/Part2_document.txt",3);
         System.out.println("--- FCD2 ---\n" + FCD2);
         System.out.println("getType(): " + FCD2.getType());
         System.out.println("getUsername(): " + FCD2.getUsername());
         System.out.println("getDate(): " + FCD2.getDate());
         System.out.println("getFileName(): " + FCD2.getFileName());
-        System.out.println("getData(): " + FCD2.getData());
         System.out.println("hashCode(): " + FCD2.hashCode() + "\n");
-        FCD2.readFileContents();
+        FCD2.readFileContents(CONSTANT_TESTINGKEY);
         System.out.println("getData(): " + FCD2.getData());
+        System.out.println("getData(key): " + FCD2.getData(CONSTANT_TESTINGKEY));
 
-        FCD2.setFileName("newFile.txt");
+        FCD2.setFileName("src/test/writeFileTest.txt");
         System.out.println("--- Changed fileName FCD2 ---\n" + FCD2);
         System.out.println("getType(): " + FCD2.getType());
         System.out.println("getUsername(): " + FCD2.getUsername());
         System.out.println("getDate(): " + FCD2.getDate());
         System.out.println("getFileName(): " + FCD2.getFileName());
-        System.out.println("getData(): " + FCD2.getData());
         System.out.println("hashCode(): " + FCD2.hashCode() + "\n");
-        FCD2.readFileContents();
+        FCD2.writeFileContents(CONSTANT_TESTINGKEY);
         System.out.println("getData(): " + FCD2.getData());
+        System.out.println("getData(key): " + FCD2.getData(CONSTANT_TESTINGKEY));
     }
 }

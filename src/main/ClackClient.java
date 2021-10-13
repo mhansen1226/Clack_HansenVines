@@ -85,9 +85,11 @@ public class ClackClient {
      */
     public void start() {
         inFromStd = new Scanner(System.in);
-        readClientData();
-        dataToReceiveFromServer = dataToSendToServer;
-        printData();
+        while (!closeConnection) {
+            readClientData();
+            dataToReceiveFromServer = dataToSendToServer;
+            printData();
+        }
     }
 
 
@@ -102,8 +104,7 @@ public class ClackClient {
                 closeConnection = true;
                 break;
             case "SENDFILE":
-                dataToSendToServer = new FileClackData();
-                ((FileClackData) dataToSendToServer).setFileName(inFromStd.next());
+                dataToSendToServer = new FileClackData(userName, inFromStd.next(), ClackData.CONSTANT_SENDFILE);
                 try {
                     ((FileClackData) dataToSendToServer).readFileContents();
                 } catch (IOException e) {
@@ -114,7 +115,7 @@ public class ClackClient {
 
                 break;
             default:
-                dataToSendToServer = new MessageClackData();
+                dataToSendToServer = new MessageClackData(userName, inFromStd.nextLine(), ClackData.CONSTANT_SENDMESSAGE);
                 break;
         }
 
