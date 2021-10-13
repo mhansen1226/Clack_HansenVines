@@ -2,8 +2,13 @@ package main;
 
 
 import data.ClackData;
+import data.FileClackData;
+import data.MessageClackData;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
+
 
 /**
  * Parent class that is used to represent the client user.
@@ -14,12 +19,14 @@ public class ClackClient {
 
     private static final int CONSTANT_DEFAULT_PORT = 7000;
 
+    private String key;
     private String userName;
     private String hostName;
     private int port;
     private boolean closeConnection;
     ClackData dataToSendToServer;
     ClackData dataToReceiveFromServer;
+    Scanner inFromStd;
 
     /**
      * constructor creates an instance based on username hostname and port number
@@ -77,6 +84,10 @@ public class ClackClient {
      * Start method. Will be implemented later
      */
     public void start() {
+        inFromStd = new Scanner(System.in);
+        readClientData();
+        dataToReceiveFromServer = dataToSendToServer;
+        printData();
     }
 
 
@@ -85,6 +96,28 @@ public class ClackClient {
      * read client data method. Will be implemented later
      */
     public void readClientData() {
+        String input = inFromStd.next();
+        switch (input) {
+            case "DONE":
+                closeConnection = true;
+                break;
+            case "SENDFILE":
+                dataToSendToServer = new FileClackData();
+                ((FileClackData) dataToSendToServer).setFileName(inFromStd.next());
+                try {
+                    ((FileClackData) dataToSendToServer).readFileContents();
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+                break;
+            case "LISTUSERS":
+
+                break;
+            default:
+                dataToSendToServer = new MessageClackData();
+                break;
+        }
+
     }
     /**
      * Method to send data. Will be implemented later
@@ -102,6 +135,8 @@ public class ClackClient {
      * Method to print data. Will be implemented later
      */
     public void printData() {
+        System.out.println(dataToReceiveFromServer.getUsername() + ":\n");
+        System.out.println(dataToReceiveFromServer.getData());
     }
 
     /**

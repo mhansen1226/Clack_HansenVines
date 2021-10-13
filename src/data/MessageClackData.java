@@ -29,7 +29,7 @@ public class MessageClackData extends ClackData {
      * Message is set to null.
      */
     public MessageClackData() {
-        super(CONSTANT_LISTUSERS);
+        super(CONSTANT_SENDMESSAGE);
         this.message = null;
     }
 
