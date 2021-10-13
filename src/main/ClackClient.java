@@ -37,13 +37,22 @@ public class ClackClient {
      * @param port     port number
      */
 
-    public ClackClient(String userName, String hostName, int port) {
+    public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException {
+        if (userName == null)
+            throw new IllegalArgumentException("userName cannot be null");
+        if (hostName == null )
+            throw new IllegalArgumentException("hostName cannot be null");
+        if (port < 1024)
+            throw new IllegalArgumentException("port cannot be less than 1024");
+
         this.userName = userName;
         this.hostName = hostName;
         this.port = port;
         this.closeConnection = false;
         this.dataToReceiveFromServer = null;
         this.dataToSendToServer = null;
+
+
     }
 
     /**
@@ -54,7 +63,7 @@ public class ClackClient {
      * @param userName set to username
      * @param hostName set to host name
      */
-    public ClackClient(String userName, String hostName) {
+    public ClackClient(String userName, String hostName) throws IllegalArgumentException {
         this(userName, hostName, CONSTANT_DEFAULT_PORT);
     }
 
@@ -88,7 +97,9 @@ public class ClackClient {
         while (!closeConnection) {
             readClientData();
             dataToReceiveFromServer = dataToSendToServer;
-            printData();
+            if (dataToSendToServer != null)
+                printData();
+
         }
     }
 

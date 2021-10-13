@@ -10,7 +10,24 @@ import main.ClackClient;
 
 public class TestClackClient {
     public static void main(String[] args) {
-        ClackClient CC1 = new ClackClient("USERNAME","HOSTNAME", -7000);
+
+        try {
+            ClackClient CC0 = new ClackClient(null);
+        }catch (IllegalArgumentException iae){
+            System.err.println(iae.getMessage());
+        }
+        try {
+            ClackClient CC0 = new ClackClient("USERNAME", null);
+        }catch (IllegalArgumentException iae){
+            System.err.println(iae.getMessage());
+        }
+        try {
+            ClackClient CC0 = new ClackClient("USERNAME", "HOSTNAME", 1023);
+        }catch (IllegalArgumentException iae){
+            System.err.println(iae.getMessage());
+        }
+
+        ClackClient CC1 = new ClackClient("USERNAME","HOSTNAME", 7000);
         System.out.println("--- CC1 --- \n" +  CC1);
         System.out.println("getUserName(): " + CC1.getUserName());
         System.out.println("getHostName(): " + CC1.getHostName());
@@ -37,6 +54,8 @@ public class TestClackClient {
         System.out.println("getHostName(): " + CC4.getHostName());
         System.out.println("getPort(): " + CC4.getPort());
         System.out.println("hashCode(): "+ CC4.hashCode() + "\n");
+        CC4.start();
+
 
         System.out.println(CC1.equals(CC2));
         System.out.println(CC1.equals(CC4));
