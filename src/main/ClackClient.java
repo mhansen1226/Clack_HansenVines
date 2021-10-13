@@ -90,7 +90,7 @@ public class ClackClient {
     }
 
     /**
-     * Start method. Will be implemented later
+     * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
     public void start() {
         inFromStd = new Scanner(System.in);
@@ -105,7 +105,7 @@ public class ClackClient {
 
 
     /**
-     * read client data method. Will be implemented later
+     * Read data passed from Standard.in
      */
     public void readClientData() {
         String input = inFromStd.next();
@@ -143,7 +143,7 @@ public class ClackClient {
     }
 
     /**
-     * Method to print data. Will be implemented later
+     * Method to print data.
      */
     public void printData() {
         System.out.println(dataToReceiveFromServer.getUsername() + ":");
@@ -151,7 +151,7 @@ public class ClackClient {
     }
 
     /**
-     * A get method for the user name
+     * A get method for the username
      * @return returns username
      */
     public String getUserName() {
