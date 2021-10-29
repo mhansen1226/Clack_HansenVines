@@ -97,7 +97,7 @@ public class ClackClient {
     /**
      * Main method
      *
-     * @param args optional argument to pass to client in the form "<username>@<hostname>:<portnumber>"
+     * @param args optional argument to pass to client in the form "username@hostnam:portnumber"
      *             can be truncated
      */
     public static void main(String[] args) {
