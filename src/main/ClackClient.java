@@ -6,6 +6,9 @@ import data.FileClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -27,6 +30,9 @@ public class ClackClient {
     ClackData dataToSendToServer;
     ClackData dataToReceiveFromServer;
     Scanner inFromStd;
+
+    ObjectInputStream inFromServer;
+    ObjectOutputStream outToServer;
 
     /**
      * constructor creates an instance based on username hostname and port number
@@ -51,8 +57,8 @@ public class ClackClient {
         this.closeConnection = false;
         this.dataToReceiveFromServer = null;
         this.dataToSendToServer = null;
-
-
+        this.inFromServer = null;
+        this.outToServer = null;
     }
 
     /**
@@ -93,12 +99,23 @@ public class ClackClient {
      * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
     public void start() {
-        inFromStd = new Scanner(System.in);
-        while (!closeConnection) {
-            readClientData();
-            dataToReceiveFromServer = dataToSendToServer;
-            if (dataToSendToServer != null)
-                printData();
+        try {
+            Socket skt = new Socket(hostName, port);
+
+            outToServer = new ObjectOutputStream(skt.getOutputStream());
+            inFromServer = new ObjectInputStream(skt.getInputStream());
+
+            inFromStd = new Scanner(System.in);
+
+            while (!closeConnection) {
+                readClientData();
+                sendData();
+                receiveData();
+                if (dataToSendToServer != null)
+                    printData();
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
         }
     }
 
@@ -134,6 +151,7 @@ public class ClackClient {
      * Method to send data. Will be implemented later
      */
     public void sendData() {
+
     }
 
     /**
