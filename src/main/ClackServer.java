@@ -2,13 +2,10 @@ package main;
 
 import data.ClackData;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 import java.util.Objects;
-import java.util.Scanner;
+
 
 /**
  * This class is a blueprint for a ClackServer object that contains information about the port number that clients
@@ -57,11 +54,13 @@ public class ClackServer {
      */
     public static void main(String[] args)
     {
-        if (args.length ==0){
-            ClackServer CS = new ClackServer();}
-        else {
-            ClackServer CS = new ClackServer(Integer.parseInt(args[0]));
-        }
+        ClackServer CS;
+        if (args.length == 0)
+            CS = new ClackServer();
+        else
+            CS = new ClackServer(Integer.parseInt(args[0]));
+
+        CS.start();
     }
 
     /**
@@ -70,9 +69,9 @@ public class ClackServer {
     public void start() {
         try {
             ServerSocket skt = new ServerSocket(port);
-            Socket clientSkt =skt.accept();
-            ObjectInputStream inFromClient = new ObjectInputStream(clientSkt.getInputStream());
-            ObjectOutputStream outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
+            Socket clientSkt = skt.accept();
+            inFromClient = new ObjectInputStream(clientSkt.getInputStream());
+            outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
 
 
             while(!closeConnection)
@@ -81,6 +80,9 @@ public class ClackServer {
                 dataToSendToClient = dataToReceiveFromClient;
                 sendData();
             }
+            inFromClient.close();
+            outToClient.close();
+            skt.close();
 
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
@@ -106,6 +108,7 @@ public class ClackServer {
     public void sendData() {
             try {
                 outToClient.writeObject(dataToSendToClient);
+                outToClient.flush();
             } catch (IOException ioe) {
                 System.err.println(ioe.getMessage());
             }

@@ -30,8 +30,8 @@ public class ClackClient {
     private ClackData dataToSendToServer;
     private ClackData dataToReceiveFromServer;
     private Scanner inFromStd;
-    private ObjectInputStream inFromServer;
     private ObjectOutputStream outToServer;
+    private ObjectInputStream inFromServer;
 
     /**
      * constructor creates an instance based on username hostname and port number
@@ -80,7 +80,7 @@ public class ClackClient {
      * @param userName set to username
      */
     public ClackClient(String userName) {
-        this(userName, "localHost");
+        this(userName, "localhost");
     }
 
     /**
@@ -93,6 +93,35 @@ public class ClackClient {
     public ClackClient() {
         this("Anon");
     }
+
+    public static void main(String[] args) {
+
+        ClackClient client;
+
+        client = new ClackClient();
+        if (args.length > 0) {
+            String input = args[0];
+            String username;
+            String hostName;
+            String sPort;
+            try {
+                username = input.substring(0, input.indexOf('@'));
+                client = new ClackClient(username);
+
+                hostName = input.substring(input.indexOf('@') + 1, input.indexOf(':'));
+                client = new ClackClient(username, hostName);
+
+                sPort = input.substring(input.indexOf(':') + 1);
+                int port = Integer.parseInt(sPort);
+                client = new ClackClient(username, hostName, port);
+            } catch (StringIndexOutOfBoundsException sioobe) {
+                System.err.println(sioobe.getMessage());
+            }
+        }
+
+        client.start();
+    }
+
 
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
@@ -113,6 +142,10 @@ public class ClackClient {
                 if (dataToSendToServer != null)
                     printData();
             }
+            outToServer.close();
+            inFromServer.close();
+            skt.close();
+
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -124,6 +157,7 @@ public class ClackClient {
      * Read data passed from Standard.in
      */
     public void readClientData() {
+        dataToSendToServer = null; // clear data
         String input = inFromStd.next();
         switch (input) {
             case "DONE":
@@ -147,11 +181,12 @@ public class ClackClient {
 
     }
     /**
-     * Method to send data. Will be implemented later
+     * Method to send data.
      */
     public void sendData() {
         try {
             outToServer.writeObject(dataToSendToServer);
+            outToServer.flush();
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
