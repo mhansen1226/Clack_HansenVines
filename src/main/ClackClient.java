@@ -27,12 +27,11 @@ public class ClackClient {
     private String hostName;
     private int port;
     private boolean closeConnection;
-    ClackData dataToSendToServer;
-    ClackData dataToReceiveFromServer;
-    Scanner inFromStd;
-
-    ObjectInputStream inFromServer;
-    ObjectOutputStream outToServer;
+    private ClackData dataToSendToServer;
+    private ClackData dataToReceiveFromServer;
+    private Scanner inFromStd;
+    private ObjectInputStream inFromServer;
+    private ObjectOutputStream outToServer;
 
     /**
      * constructor creates an instance based on username hostname and port number
@@ -151,13 +150,22 @@ public class ClackClient {
      * Method to send data. Will be implemented later
      */
     public void sendData() {
-
+        try {
+            outToServer.writeObject(dataToSendToServer);
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
     /**
      *Method to receive data. Will be implemented later
      */
     public void receiveData() {
+        try {
+            dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+        } catch (IOException | ClassNotFoundException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
     /**
