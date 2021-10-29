@@ -94,6 +94,12 @@ public class ClackClient {
         this("Anon");
     }
 
+    /**
+     * Main method
+     *
+     * @param args optional argument to pass to client in the form "<username>@<hostname>:<portnumber>"
+     *             can be truncated
+     */
     public static void main(String[] args) {
 
         ClackClient client;
