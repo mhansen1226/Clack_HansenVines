@@ -1,7 +1,7 @@
 package data;
 
 import java.util.Date;
-
+import java.io.Serializable;
 import static java.lang.Character.*;
 
 
@@ -10,7 +10,7 @@ import static java.lang.Character.*;
  *
  * @author Matt Hansen
  */
-public abstract class ClackData {
+public abstract class ClackData implements Serializable {
     private String userName;
     private int type;
     private Date date;
