@@ -52,6 +52,19 @@ public class ClackServer {
     }
 
     /**
+     * Main method
+     * @param args Takes in port #
+     */
+    public static void main(String[] args)
+    {
+        if (args.length ==0){
+            ClackServer CS = new ClackServer();}
+        else {
+            ClackServer CS = new ClackServer(Integer.parseInt(args[0]));
+        }
+    }
+
+    /**
      * Start server
      */
     public void start() {
