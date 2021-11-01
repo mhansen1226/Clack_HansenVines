@@ -73,7 +73,6 @@ public class ClackServer {
             inFromClient = new ObjectInputStream(clientSkt.getInputStream());
             outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
 
-
             while(!closeConnection)
             {
                 receiveData();
@@ -94,12 +93,14 @@ public class ClackServer {
      * Receive data from client
      */
     public void receiveData() {
-            try {
-                dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            } catch (IOException | ClassNotFoundException ioe) {
-                System.err.println(ioe.getMessage());
-            }
+        try {
+            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+        } catch (IOException | ClassNotFoundException ioe) {
+            System.err.println(ioe.getMessage());
         }
+        if (dataToReceiveFromClient == null)
+            closeConnection = true;
+    }
 
 
     /**

@@ -103,27 +103,40 @@ public class ClackClient {
     public static void main(String[] args) {
 
         ClackClient client;
-
-        client = new ClackClient();
+        String username = null;
+        String hostName = null;
+        String sPort = null;
+        int port = 0;
         if (args.length > 0) {
             String input = args[0];
-            String username;
-            String hostName;
-            String sPort;
-            try {
-                username = input.substring(0, input.indexOf('@'));
-                client = new ClackClient(username);
 
-                hostName = input.substring(input.indexOf('@') + 1, input.indexOf(':'));
-                client = new ClackClient(username, hostName);
+            int idx1 = input.indexOf('@');
+            int idx2 = input.indexOf(':');
 
-                sPort = input.substring(input.indexOf(':') + 1);
-                int port = Integer.parseInt(sPort);
-                client = new ClackClient(username, hostName, port);
-            } catch (StringIndexOutOfBoundsException sioobe) {
-                System.err.println(sioobe.getMessage());
-            }
+            if(idx1 != -1) {
+                username = input.substring(0, idx1);
+                if (idx2 != -1) {
+                    hostName = input.substring(idx1 + 1, idx2);
+                    sPort = input.substring(idx2 + 1);
+                    try {
+                        port = Integer.parseInt(sPort);
+                    } catch (NumberFormatException nfe) {
+                        System.err.println(nfe.getMessage());
+                    }
+                } else
+                    hostName = input.substring(idx1 + 1);
+            } else
+                username = input;
         }
+
+        if (sPort != null)
+            client = new ClackClient(username, hostName, port);
+        else if (hostName != null)
+            client = new ClackClient(username, hostName);
+        else if (username != null)
+            client = new ClackClient(username);
+        else
+            client= new ClackClient();
 
         client.start();
     }
