@@ -76,11 +76,8 @@ public class ClackServer {
             while(!closeConnection)
             {
                 receiveData();
-                if (dataToReceiveFromClient == null) {
-                    System.out.println(dataToReceiveFromClient.getData());
-                    dataToSendToClient = dataToReceiveFromClient;
-                    sendData();
-                }
+                dataToSendToClient = dataToReceiveFromClient;
+                sendData();
             }
             inFromClient.close();
             outToClient.close();
