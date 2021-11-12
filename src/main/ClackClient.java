@@ -154,13 +154,14 @@ public class ClackClient {
 
             inFromStd = new Scanner(System.in);
 
+            Thread listener = new Thread( new ClientSideServerListener(this) );
+            listener.start();
+
             while (!closeConnection) {
                 readClientData();
                 sendData();
-                receiveData();
-                if (dataToSendToServer != null)
-                    printData();
             }
+
             outToServer.close();
             inFromServer.close();
             skt.close();
@@ -252,6 +253,14 @@ public class ClackClient {
      */
     public int getPort() {
         return port;
+    }
+
+    /**
+     * A get method for the closeConnection condition
+     * @return returns closeConnerction
+     */
+    public boolean getCloseConnection() {
+        return closeConnection;
     }
 
     /**

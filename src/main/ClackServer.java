@@ -2,8 +2,11 @@ package main;
 
 import data.ClackData;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Objects;
 
 
@@ -102,18 +105,25 @@ public class ClackServer {
             closeConnection = true;
     }
 
+    public void broadcast() {
+
+    }
+
+    public void remove() {
+
+    }
 
     /**
      * Send data to client
      */
     public void sendData() {
-            try {
-                outToClient.writeObject(dataToSendToClient);
-                outToClient.flush();
-            } catch (IOException ioe) {
-                System.err.println(ioe.getMessage());
-            }
+        try {
+            outToClient.writeObject(dataToSendToClient);
+            outToClient.flush();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
         }
+    }
 
 
     /**
@@ -194,4 +204,6 @@ public class ClackServer {
                 data;
 
     }
+
+
 }
