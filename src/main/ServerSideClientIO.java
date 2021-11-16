@@ -35,8 +35,9 @@ public class ServerSideClientIO implements Runnable {
 
             while(!closeConnection)
             {
-                server.receiveData();
-                server.broadcast();
+                receiveData();
+                checkData();
+                server.broadcast(dataToReceiveFromClient);
             }
             inFromClient.close();
             outToClient.close();
@@ -66,17 +67,15 @@ public class ServerSideClientIO implements Runnable {
         }
         if (dataToReceiveFromClient == null)
             closeConnection = true;
-            server.remove();
+            server.remove(this);
     }
 
+    public void checkData() {
+        if (dataToReceiveFromClient.getData().equals("LISTUSERS")) {
+
+        }
+    }
     public void setDataToSendToClient(ClackData data) {
         this.dataToSendToClient = data;
     }
-
-    public void setDataToReceiveFromClient(ClackData data) {
-        this.dataToReceiveFromClient = data;
-    }
-
-
-
 }

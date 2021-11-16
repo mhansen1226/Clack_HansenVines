@@ -3,10 +3,8 @@ package main;
 import data.ClackData;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -22,10 +20,9 @@ public class ClackServer {
 
     private int port;
     private boolean closeConnection;
-    private ClackData dataToReceiveFromClient;
-    private ClackData dataToSendToClient;
-    private ObjectInputStream inFromClient;
-    private ObjectOutputStream outToClient;
+    private ArrayList<ServerSideClientIO> serverSideClientIOList;
+    private ArrayList<String> clientUsernames;
+
     /**
      * Constructor that creates an instance of ClackServer with a user-provided port number.
      * For now, dataToReceiveFromClient and dataToSendToClient are set to null
@@ -36,13 +33,9 @@ public class ClackServer {
         if (port < 1024)
             throw new IllegalArgumentException("Port cannot be less than 1024");
 
+        this.serverSideClientIOList = new ArrayList<>();
         this.closeConnection = false;
         this.port = port;
-        this.dataToReceiveFromClient = null;
-        this.dataToSendToClient = null;
-
-        this.inFromClient = null;
-        this.outToClient = null;
     }
     /**
      * Default constructor that creates an instance of ClackServer with a port number of 7000.
@@ -72,59 +65,32 @@ public class ClackServer {
     public void start() {
         try {
             ServerSocket skt = new ServerSocket(port);
-            Socket clientSkt = skt.accept();
-            inFromClient = new ObjectInputStream(clientSkt.getInputStream());
-            outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
-
-            while(!closeConnection)
-            {
-                receiveData();
-                dataToSendToClient = dataToReceiveFromClient;
-                sendData();
+            while (!closeConnection) {
+                ServerSideClientIO sscio = new ServerSideClientIO(this, skt.accept());
+                serverSideClientIOList.add(sscio);
+                new Thread(sscio).start();
             }
-            inFromClient.close();
-            outToClient.close();
             skt.close();
 
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+           System.err.println(ioe.getMessage());
         }
-
     }
 
     /**
      * Receive data from client
      */
-    public void receiveData() {
-        try {
-            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-        } catch (IOException | ClassNotFoundException ioe) {
-            System.err.println(ioe.getMessage());
-        }
-        if (dataToReceiveFromClient == null)
-            closeConnection = true;
-    }
 
-    public void broadcast() {
-
-    }
-
-    public void remove() {
-
-    }
-
-    /**
-     * Send data to client
-     */
-    public void sendData() {
-        try {
-            outToClient.writeObject(dataToSendToClient);
-            outToClient.flush();
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+    public synchronized void broadcast(ClackData dataToBroadcastToClients) {
+        for (ServerSideClientIO j : serverSideClientIOList) {
+            j.setDataToSendToClient(dataToBroadcastToClients);
+            j.sendData();
         }
     }
 
+    public synchronized void remove(ServerSideClientIO sscio) {
+        serverSideClientIOList.remove(sscio);
+    }
 
     /**
      * Port number accessor

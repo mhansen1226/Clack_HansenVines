@@ -157,6 +157,10 @@ public class ClackClient {
             Thread listener = new Thread( new ClientSideServerListener(this) );
             listener.start();
 
+
+            setDataToSendToServer(new MessageClackData(userName, getUserName(), ClackData.CONSTANT_SENDMESSAGE));
+            sendData();
+
             while (!closeConnection) {
                 readClientData();
                 sendData();
@@ -192,7 +196,7 @@ public class ClackClient {
                 }
                 break;
             case "LISTUSERS":
-
+                dataToSendToServer = new MessageClackData(userName, "LISTUSERS", ClackData.CONSTANT_SENDMESSAGE);
                 break;
             default:
                 dataToSendToServer = new MessageClackData(userName, input + inFromStd.nextLine(), ClackData.CONSTANT_SENDMESSAGE);
@@ -263,6 +267,9 @@ public class ClackClient {
         return closeConnection;
     }
 
+    public void setDataToSendToServer(ClackData data) {
+        this.dataToSendToServer = data;
+    }
     /**
      * Overrides the Object.equals() method
      * @param other Takes in an Clack Client object and compares if two objects are equal
