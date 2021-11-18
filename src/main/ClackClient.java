@@ -166,8 +166,8 @@ public class ClackClient {
                 sendData();
             }
 
-            outToServer.close();
             inFromServer.close();
+            outToServer.close();
             skt.close();
 
         } catch (IOException ioe) {
