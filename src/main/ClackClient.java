@@ -231,8 +231,10 @@ public class ClackClient {
      * Method to print data.
      */
     public void printData() {
-        System.out.println(dataToReceiveFromServer.getUsername() + ":");
-        System.out.println("\t" + dataToReceiveFromServer.getData());
+        if (dataToReceiveFromServer != null) {
+            System.out.println(dataToReceiveFromServer.getUsername() + ":");
+            System.out.println("\t" + dataToReceiveFromServer.getData());
+        }
     }
 
     /**

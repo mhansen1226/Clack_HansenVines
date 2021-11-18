@@ -94,7 +94,6 @@ public class ClackServer {
     }
 
     public void addUser(String username) {
-        System.out.println(username);
         clientUsernames.add(username);
     }
     /**
