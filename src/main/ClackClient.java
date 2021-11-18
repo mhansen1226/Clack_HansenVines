@@ -157,8 +157,7 @@ public class ClackClient {
             Thread listener = new Thread( new ClientSideServerListener(this) );
             listener.start();
 
-
-            setDataToSendToServer(new MessageClackData(userName, getUserName(), ClackData.CONSTANT_SENDMESSAGE));
+            setDataToSendToServer(new MessageClackData(userName, "USERNAME", ClackData.CONSTANT_SENDMESSAGE));
             sendData();
 
             while (!closeConnection) {

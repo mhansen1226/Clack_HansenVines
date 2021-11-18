@@ -72,8 +72,11 @@ public class ServerSideClientIO implements Runnable {
     }
 
     public void checkData() {
-        if (dataToReceiveFromClient != null && dataToReceiveFromClient.getData().equals("LISTUSERS")) {
-            server.addUser(dataToReceiveFromClient.getUsername());
+        if (dataToReceiveFromClient != null) {
+            if (dataToReceiveFromClient.getData().equals("USERNAME"))
+                server.addUser(dataToReceiveFromClient.getUsername());
+            if (dataToReceiveFromClient.getData().equals("LISTUSERS"))
+                server.listUsers(this);
         }
     }
 

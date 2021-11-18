@@ -1,6 +1,7 @@
 package main;
 
 import data.ClackData;
+import data.MessageClackData;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -21,7 +22,7 @@ public class ClackServer {
     private int port;
     private boolean closeConnection;
     private ArrayList<ServerSideClientIO> serverSideClientIOList;
-    private ArrayList<String> clientUsernames;
+    public ArrayList<String> clientUsernames;
 
     /**
      * Constructor that creates an instance of ClackServer with a user-provided port number.
@@ -65,6 +66,7 @@ public class ClackServer {
      */
     public void start() {
         try {
+
             ServerSocket skt = new ServerSocket(port);
             while (!closeConnection) {
                 ServerSideClientIO sscio = new ServerSideClientIO(this, skt.accept());
@@ -95,6 +97,12 @@ public class ClackServer {
 
     public void addUser(String username) {
         clientUsernames.add(username);
+    }
+
+    public void listUsers(ServerSideClientIO sscio) {
+        ClackData data = new MessageClackData("User List", clientUsernames.toString(), ClackData.CONSTANT_SENDMESSAGE);
+        sscio.setDataToSendToClient(data);
+        sscio.sendData();
     }
     /**
      * Port number accessor
