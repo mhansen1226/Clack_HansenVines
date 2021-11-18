@@ -17,6 +17,7 @@ public class ServerSideClientIO implements Runnable {
     private ObjectOutputStream outToClient;
     private ClackServer server;
     private Socket clientSocket;
+    public String username;
 
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
@@ -26,6 +27,7 @@ public class ServerSideClientIO implements Runnable {
         this.dataToSendToClient = null;
         this.inFromClient = null;
         this.outToClient = null;
+        this.username = null;
     }
 
     @Override
@@ -38,7 +40,8 @@ public class ServerSideClientIO implements Runnable {
             {
                 receiveData();
                 checkData();
-                server.broadcast(dataToReceiveFromClient);
+                if (dataToReceiveFromClient != null)
+                    server.broadcast(dataToReceiveFromClient);
             }
             inFromClient.close();
             outToClient.close();
@@ -55,6 +58,7 @@ public class ServerSideClientIO implements Runnable {
         try {
             outToClient.writeObject(dataToSendToClient);
             outToClient.flush();
+            dataToSendToClient = null;
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -66,17 +70,21 @@ public class ServerSideClientIO implements Runnable {
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
         }
-        if (dataToReceiveFromClient == null)
+        if (dataToReceiveFromClient == null) {
             closeConnection = true;
             server.remove(this);
+        }
     }
 
     public void checkData() {
         if (dataToReceiveFromClient != null) {
-            if (dataToReceiveFromClient.getData().equals("USERNAME"))
-                server.addUser(dataToReceiveFromClient.getUsername());
-            if (dataToReceiveFromClient.getData().equals("LISTUSERS"))
+            if (dataToReceiveFromClient.getData().equals("USERNAME")) {
+                username = dataToReceiveFromClient.getUsername();
+                dataToReceiveFromClient = null;
+            } else if (dataToReceiveFromClient.getData().equals("LISTUSERS")) {
                 server.listUsers(this);
+                dataToReceiveFromClient = null;
+            }
         }
     }
 

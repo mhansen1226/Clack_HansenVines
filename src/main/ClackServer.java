@@ -22,7 +22,6 @@ public class ClackServer {
     private int port;
     private boolean closeConnection;
     private ArrayList<ServerSideClientIO> serverSideClientIOList;
-    public ArrayList<String> clientUsernames;
 
     /**
      * Constructor that creates an instance of ClackServer with a user-provided port number.
@@ -35,7 +34,6 @@ public class ClackServer {
             throw new IllegalArgumentException("Port cannot be less than 1024");
 
         this.serverSideClientIOList = new ArrayList<>();
-        this.clientUsernames = new ArrayList<>();
         this.closeConnection = false;
         this.port = port;
     }
@@ -95,12 +93,14 @@ public class ClackServer {
         serverSideClientIOList.remove(sscio);
     }
 
-    public void addUser(String username) {
-        clientUsernames.add(username);
-    }
-
     public void listUsers(ServerSideClientIO sscio) {
-        ClackData data = new MessageClackData("User List", clientUsernames.toString(), ClackData.CONSTANT_SENDMESSAGE);
+        String users = "[";
+        for (ServerSideClientIO j : serverSideClientIOList) {
+            users += j.username + ", ";
+        }
+        users = users.substring(0, users.length()-2) + "]";
+
+        ClackData data = new MessageClackData("User List", users, ClackData.CONSTANT_SENDMESSAGE);
         sscio.setDataToSendToClient(data);
         sscio.sendData();
     }
