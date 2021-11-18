@@ -1,6 +1,7 @@
 package main;
 
 import data.ClackData;
+import data.MessageClackData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -72,9 +73,10 @@ public class ServerSideClientIO implements Runnable {
 
     public void checkData() {
         if (dataToReceiveFromClient.getData().equals("LISTUSERS")) {
-
+            server.addUser(dataToReceiveFromClient.getUsername());
         }
     }
+
     public void setDataToSendToClient(ClackData data) {
         this.dataToSendToClient = data;
     }

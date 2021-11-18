@@ -97,7 +97,7 @@ public class ClackClient {
     /**
      * Main method
      *
-     * @param args optional argument to pass to client in the form "username@hostnam:portnumber"
+     * @param args optional argument to pass to client in the form "username@hostname:portnumber"
      *             can be truncated
      */
     public static void main(String[] args) {
@@ -181,7 +181,6 @@ public class ClackClient {
      * Read data passed from Standard.in
      */
     public void readClientData() {
-        dataToSendToServer = null; // clear data
         String input = inFromStd.next();
         switch (input) {
             case "DONE":
@@ -211,6 +210,7 @@ public class ClackClient {
         try {
             outToServer.writeObject(dataToSendToServer);
             outToServer.flush();
+            dataToSendToServer = null; // clear data
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
