@@ -79,7 +79,8 @@ public class ClackServer {
     }
 
     /**
-     * Receive data from client
+     * Sets serverSideClientIO.dataToSendToClient equal to dataToBroadcastToClients and sends it for each serverSideClientIO
+     * in serverSideClientIOList.
      */
 
     public synchronized void broadcast(ClackData dataToBroadcastToClients) {
@@ -89,12 +90,21 @@ public class ClackServer {
         }
     }
 
+    /**
+     * Removes the serverSideClientIO from the serverSideClientIOList
+     * @param sscio the serverSideClientIO
+     */
     public synchronized void remove(ServerSideClientIO sscio) {
         serverSideClientIOList.remove(sscio);
         if (serverSideClientIOList.size() == 0)
             closeConnection = true;
     }
 
+    /**
+     * Builds a list of all client usernames that are connected to the server and sends them to the client that requested
+     * it.
+     * @param sscio the serverSideClientIO class connected to the client that requested the list
+     */
     public void listUsers(ServerSideClientIO sscio) {
         String users = "[";
         for (ServerSideClientIO j : serverSideClientIOList) {

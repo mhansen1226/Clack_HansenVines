@@ -1,13 +1,16 @@
 package main;
 
 import data.ClackData;
-import data.MessageClackData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Class that handles IO with an individual client on the side of the server. Used to multithread multiple clients in
+ * the same server.
+ */
 public class ServerSideClientIO implements Runnable {
 
     private boolean closeConnection;
@@ -19,6 +22,13 @@ public class ServerSideClientIO implements Runnable {
     private Socket clientSocket;
     private String username;
 
+    /**
+     * Constructer that creates an instance of ServerSideClientIO based on user input for server and clientSocket.
+     * closeConnection is set to false and all other instance variables are null.
+     *
+     * @param server the server that created the instance
+     * @param clientSocket the socket connected to the client
+     */
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
@@ -30,6 +40,10 @@ public class ServerSideClientIO implements Runnable {
         this.username = null;
     }
 
+    /**
+     * Implements run() from the Runnable class. Opens input and output streams from th client socket and reads and
+     * sends data from and to the client.
+     */
     @Override
     public void run() {
         try {
@@ -54,6 +68,9 @@ public class ServerSideClientIO implements Runnable {
 
     }
 
+    /**
+     * Sends dataToSendToClient to the client through the outToClient stream. Clears dataToSendToClient after.
+     */
     public void sendData() {
         try {
             outToClient.writeObject(dataToSendToClient);
@@ -64,6 +81,11 @@ public class ServerSideClientIO implements Runnable {
         }
     }
 
+    /**
+     * Receives data from the client through the inFromClient stream and stores it in dataToRecieveFromClient. If
+     * nothing is received the connection is closed and the instance of this class is removed from the
+     * server.serverSideClientIOList.
+     */
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
@@ -76,6 +98,11 @@ public class ServerSideClientIO implements Runnable {
         }
     }
 
+    /**
+     * Checks to see for USERNAME or LISTUSERS keywords received from the client. If the USERNAME keyword is read, stores
+     * the username. If the LISTUSERS keyword is read. Calls server.listUsers(this) to ask the server to send the list of
+     * users online to the client that requested it. The data is cleared afterwards in both cases.
+     */
     public void checkData() {
         if (dataToReceiveFromClient != null) {
             if (dataToReceiveFromClient.getData().equals("USERNAME")) {
@@ -88,10 +115,20 @@ public class ServerSideClientIO implements Runnable {
         }
     }
 
+    /**
+     * dataToSendToClient mutator
+     *
+     * @param data data to send to client
+     */
     public void setDataToSendToClient(ClackData data) {
         this.dataToSendToClient = data;
     }
 
+    /**
+     * Username accessor
+     *
+     * @return client username
+     */
     public String getUsername() {
         return username;
     }
