@@ -233,6 +233,7 @@ public class ClackClient {
         if (dataToReceiveFromServer != null) {
             System.out.println(dataToReceiveFromServer.getUsername() + ":");
             System.out.println("\t" + dataToReceiveFromServer.getData());
+            dataToReceiveFromServer = null;
         }
     }
 
