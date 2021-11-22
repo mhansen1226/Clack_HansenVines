@@ -91,12 +91,14 @@ public class ClackServer {
 
     public synchronized void remove(ServerSideClientIO sscio) {
         serverSideClientIOList.remove(sscio);
+        if (serverSideClientIOList.size() == 0)
+            closeConnection = true;
     }
 
     public void listUsers(ServerSideClientIO sscio) {
         String users = "[";
         for (ServerSideClientIO j : serverSideClientIOList) {
-            users += j.username + ", ";
+            users += j.getUsername() + ", ";
         }
         users = users.substring(0, users.length()-2) + "]";
 

@@ -17,7 +17,7 @@ public class ServerSideClientIO implements Runnable {
     private ObjectOutputStream outToClient;
     private ClackServer server;
     private Socket clientSocket;
-    public String username;
+    private String username;
 
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
@@ -90,5 +90,9 @@ public class ServerSideClientIO implements Runnable {
 
     public void setDataToSendToClient(ClackData data) {
         this.dataToSendToClient = data;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
