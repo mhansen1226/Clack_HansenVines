@@ -1,0 +1,67 @@
+* {
+    -black: derive(black, 30%);
+    -blue: #0085ff;
+    -green: #00ba34;
+}
+
+.root {
+    -fx-background-color: -black;
+    -fx-font-family: Arial;
+    -fx-padding: 10;
+}
+
+HBox, VBox {
+    -fx-spacing: 10;
+}
+
+.label {
+    -fx-font-family: "Arial Black";
+}
+
+.text-area, .label, .button{
+    -fx-text-fill: whitesmoke;
+}
+
+.text-area {
+    -fx-background-color: -black;
+}
+.text-area .content {
+    -fx-background-color: derive(-black, 30%);
+    -fx-background-radius: 0;
+}
+
+.text-area:focused {
+    -fx-focus-color: whitesmoke;
+    -fx-faint-focus-color: whitesmoke;
+}
+
+.button {
+    -fx-background-color: -green;
+    -fx-min-width: 40;
+    -fx-font-size: 15;
+    -fx-font-family: "Arial Black";
+    -fx-text-fill: black;
+}
+
+#sendButton {
+    -fx-min-width: 60;
+
+}
+
+#mediaButton {
+    -fx-background-color: -blue;
+}
+
+#chat {
+    -fx-min-height: 500;
+
+}
+
+#messageBar, .button {
+    -fx-max-height: 40;
+}
+
+#messageBar {
+
+}
+

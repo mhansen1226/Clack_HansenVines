@@ -12,7 +12,7 @@ public class TestClackClient {
     public static void main(String[] args) {
 
         try {
-            ClackClient CC0 = new ClackClient(null);
+            ClackClient CC0 = new ClackClient();
         }catch (IllegalArgumentException iae){
             System.err.println(iae.getMessage());
         }

@@ -24,6 +24,10 @@ public class MessageClackData extends ClackData {
         this.message = message;
     }
 
+    public MessageClackData(int type) {
+        super(type);
+    }
+
     /**
      * Default constructor for MessageClackData creates an anonymous user ("Anon") in list users type.
      * Message is set to null.

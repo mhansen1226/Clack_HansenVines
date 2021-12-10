@@ -1,9 +1,7 @@
 package main;
 
 
-import data.ClackData;
-import data.FileClackData;
-import data.MessageClackData;
+import data.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Scanner;
+
 
 
 /**
@@ -100,8 +99,7 @@ public class ClackClient {
      * @param args optional argument to pass to client in the form "username@hostname:portnumber"
      *             can be truncated
      */
-    public static void main(String[] args) {
-
+    public static ClackClient buildClient(String[] args) {
         ClackClient client;
         String username = null;
         String hostName = null;
@@ -136,11 +134,9 @@ public class ClackClient {
         else if (username != null)
             client = new ClackClient(username);
         else
-            client= new ClackClient();
-
-        client.start();
+            client = new ClackClient();
+        return client;
     }
-
 
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
@@ -157,7 +153,7 @@ public class ClackClient {
             Thread listener = new Thread( new ClientSideServerListener(this) );
             listener.start();
 
-            setDataToSendToServer(new MessageClackData(userName, "USERNAME", ClackData.CONSTANT_SENDMESSAGE));
+            setDataToSendToServer(new MessageClackData(userName, userName, ClackData.CONSTANT_USERNAME));
             sendData();
 
             while (!closeConnection) {
@@ -184,6 +180,7 @@ public class ClackClient {
         switch (input) {
             case "DONE":
                 closeConnection = true;
+                dataToSendToServer = new MessageClackData(ClackData.CONSTANT_LOGOUT);
                 break;
             case "SENDFILE":
                 dataToSendToServer = new FileClackData(userName, inFromStd.next(), ClackData.CONSTANT_SENDFILE);
@@ -194,13 +191,12 @@ public class ClackClient {
                 }
                 break;
             case "LISTUSERS":
-                dataToSendToServer = new MessageClackData(userName, "LISTUSERS", ClackData.CONSTANT_SENDMESSAGE);
+                dataToSendToServer = new MessageClackData(ClackData.CONSTANT_LISTUSERS);
                 break;
             default:
                 dataToSendToServer = new MessageClackData(userName, input + inFromStd.nextLine(), ClackData.CONSTANT_SENDMESSAGE);
                 break;
         }
-
     }
     /**
      * Method to send data.
@@ -272,6 +268,7 @@ public class ClackClient {
     public void setDataToSendToServer(ClackData data) {
         this.dataToSendToServer = data;
     }
+
     /**
      * Overrides the Object.equals() method
      * @param other Takes in an Clack Client object and compares if two objects are equal

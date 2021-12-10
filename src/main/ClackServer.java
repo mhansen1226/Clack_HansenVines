@@ -106,13 +106,13 @@ public class ClackServer {
      * @param sscio the serverSideClientIO class connected to the client that requested the list
      */
     public void listUsers(ServerSideClientIO sscio) {
-        String users = "[";
+        String users = "";
         for (ServerSideClientIO j : serverSideClientIOList) {
             users += j.getUsername() + ", ";
         }
-        users = users.substring(0, users.length()-2) + "]";
+        users = users.substring(0, users.length()-2);
 
-        ClackData data = new MessageClackData("User List", users, ClackData.CONSTANT_SENDMESSAGE);
+        ClackData data = new MessageClackData("User List", users, ClackData.CONSTANT_LISTUSERS);
         sscio.setDataToSendToClient(data);
         sscio.sendData();
     }

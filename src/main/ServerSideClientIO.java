@@ -104,14 +104,15 @@ public class ServerSideClientIO implements Runnable {
      * users online to the client that requested it. The data is cleared afterwards in both cases.
      */
     public void checkData() {
-        if (dataToReceiveFromClient != null) {
-            if (dataToReceiveFromClient.getData().equals("USERNAME")) {
-                username = dataToReceiveFromClient.getUsername();
-                dataToReceiveFromClient = null;
-            } else if (dataToReceiveFromClient.getData().equals("LISTUSERS")) {
+        switch (dataToReceiveFromClient.getType()) {
+            case ClackData.CONSTANT_LISTUSERS:
                 server.listUsers(this);
                 dataToReceiveFromClient = null;
-            }
+                break;
+            case ClackData.CONSTANT_USERNAME:
+                username = dataToReceiveFromClient.getUsername();
+                dataToReceiveFromClient = null;
+                break;
         }
     }
 

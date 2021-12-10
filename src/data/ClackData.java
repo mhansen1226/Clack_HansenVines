@@ -19,6 +19,7 @@ public abstract class ClackData implements Serializable {
     public static final int CONSTANT_LOGOUT = 1;        // log out -> close the client's connection
     public static final int CONSTANT_SENDMESSAGE = 2;   // send a message
     public static final int CONSTANT_SENDFILE = 3;      // send a file
+    public static final int CONSTANT_USERNAME = 4;
     public static final int DEFAULT_TYPE = -1;          // invalid type to show something went wrong
 
 
