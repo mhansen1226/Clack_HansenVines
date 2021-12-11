@@ -114,7 +114,8 @@ public class ClackServer {
         users = users.substring(0, users.length()-2);
 
         ClackData data = new MessageClackData("User List", users, ClackData.CONSTANT_LISTUSERS);
-        broadcast(data);
+        if (users != null)
+            broadcast(data);
     }
     /**
      * Port number accessor

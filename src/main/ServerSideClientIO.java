@@ -54,7 +54,6 @@ public class ServerSideClientIO implements Runnable {
 
             while(!closeConnection)
             {
-
                 server.listUsers();
                 dataToSendToClient = null;
                 receiveData();
