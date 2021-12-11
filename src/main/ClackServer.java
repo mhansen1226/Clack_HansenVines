@@ -109,12 +109,12 @@ public class ClackServer {
     public void listUsers() {
         String users = "";
         for (ServerSideClientIO j : serverSideClientIOList) {
-            users += j.getUsername() + ", ";
+            if (j.getUsername() != null)
+                users += j.getUsername() + ", ";
         }
         users = users.substring(0, users.length()-2);
 
         ClackData data = new MessageClackData("User List", users, ClackData.CONSTANT_LISTUSERS);
-        if (users != null)
             broadcast(data);
     }
     /**
