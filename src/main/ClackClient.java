@@ -175,7 +175,7 @@ public class ClackClient {
     /**
      * Read data passed from Standard.in
      */
-    public void readClientData(int type) {
+    private void readClientData(int type) {
         switch (type) {
             case ClackData.CONSTANT_LOGOUT:
                 closeConnection = true;
@@ -191,12 +191,14 @@ public class ClackClient {
             case ClackData.CONSTANT_LISTUSERS:
                 dataToSendToServer = new MessageClackData(ClackData.CONSTANT_LISTUSERS);
                 break;
+            default:
         }
     }
     /**
      * Method to send data.
      */
     public void sendData() {
+        readClientData(dataToSendToServer.getType());
         try {
             outToServer.writeObject(dataToSendToServer);
             outToServer.flush();
@@ -223,7 +225,7 @@ public class ClackClient {
      */
     public void printData(TextArea chat) {
         if (dataToReceiveFromServer != null) {
-            chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\t" + dataToReceiveFromServer.getData());
+            chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
             dataToReceiveFromServer = null;
         }
     }

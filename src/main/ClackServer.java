@@ -167,6 +167,5 @@ public class ClackServer {
     public String toString() {
         return "Port: " + port + "\n" +
                 "Close connection? " + closeConnection;
-
     }
 }

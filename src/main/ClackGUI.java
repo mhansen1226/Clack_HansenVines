@@ -55,7 +55,7 @@ public class ClackGUI extends Application {
         scene.getStylesheets().add(stylesheet);
 
         sendButton.setOnAction(event -> {
-            client.setDataToSendToServer(new MessageClackData(client.getUserName(), messageBar.getText(), ClackData.CONSTANT_SENDFILE));
+            client.setDataToSendToServer(new MessageClackData(client.getUserName(), messageBar.getText(), ClackData.CONSTANT_SENDMESSAGE));
             client.sendData();
             messageBar.clear();
         });
@@ -63,7 +63,11 @@ public class ClackGUI extends Application {
         mediaButton.setOnAction(event -> {
             File file = new FileChooser().showOpenDialog(primaryStage);
             client.setDataToSendToServer(new FileClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDFILE));
-            client.readClientData(ClackData.CONSTANT_SENDFILE);
+            client.sendData();
+        });
+
+        primaryStage.setOnCloseRequest(event -> {
+            client.setDataToSendToServer(new MessageClackData(ClackData.CONSTANT_LOGOUT));
             client.sendData();
         });
 
