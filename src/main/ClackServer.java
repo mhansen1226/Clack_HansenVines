@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Objects;
+import javafx.scene.control.Label;
+
 
 
 /**
@@ -103,9 +105,8 @@ public class ClackServer {
     /**
      * Builds a list of all client usernames that are connected to the server and sends them to the client that requested
      * it.
-     * @param sscio the serverSideClientIO class connected to the client that requested the list
      */
-    public void listUsers(ServerSideClientIO sscio) {
+    public void listUsers() {
         String users = "";
         for (ServerSideClientIO j : serverSideClientIOList) {
             users += j.getUsername() + ", ";
@@ -113,8 +114,7 @@ public class ClackServer {
         users = users.substring(0, users.length()-2);
 
         ClackData data = new MessageClackData("User List", users, ClackData.CONSTANT_LISTUSERS);
-        sscio.setDataToSendToClient(data);
-        sscio.sendData();
+        broadcast(data);
     }
     /**
      * Port number accessor

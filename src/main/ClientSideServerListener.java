@@ -1,5 +1,6 @@
 package main;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 /**
@@ -9,14 +10,16 @@ public class ClientSideServerListener implements Runnable {
 
     private ClackClient client;
     private TextArea chat;
+    private Label userList;
 
     /**
      * Constructor that instantiates the client based on user input
      * @param client the client
      */
-    public ClientSideServerListener(ClackClient client, TextArea chat) {
+    public ClientSideServerListener(ClackClient client, TextArea chat, Label userList) {
         this.client = client;
         this.chat = chat;
+        this.userList = userList;
     }
 
     /**
@@ -26,7 +29,7 @@ public class ClientSideServerListener implements Runnable {
     public void run() {
         while (!client.getCloseConnection()) {
             client.receiveData();
-            client.printData(chat);
+            client.printData(chat, userList);
         }
     }
 }

@@ -2,10 +2,12 @@ package main;
 
 import data.ClackData;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import javafx.scene.control.Label;
 
 /**
  * Class that handles IO with an individual client on the side of the server. Used to multithread multiple clients in
@@ -52,9 +54,11 @@ public class ServerSideClientIO implements Runnable {
 
             while(!closeConnection)
             {
+
+                server.listUsers();
+                dataToSendToClient = null;
                 receiveData();
-                if (dataToReceiveFromClient != null){
-                    checkData();
+                if (dataToReceiveFromClient != null) {
                     server.broadcast(dataToReceiveFromClient);
                 }
             }
@@ -90,30 +94,19 @@ public class ServerSideClientIO implements Runnable {
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
-                closeConnection = true;
-                server.remove(this);
+            switch (dataToReceiveFromClient.getType()) {
+                case ClackData.CONSTANT_USERNAME:
+                    username = dataToReceiveFromClient.getUsername();
+                    dataToReceiveFromClient = null;
+                    break;
+                case ClackData.CONSTANT_LOGOUT:
+                    closeConnection = true;
+                    dataToReceiveFromClient = null;
+                    server.remove(this);
+                    break;
             }
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
-        }
-    }
-
-    /**
-     * Checks to see for USERNAME or LISTUSERS keywords received from the client. If the USERNAME keyword is read, stores
-     * the username. If the LISTUSERS keyword is read. Calls server.listUsers(this) to ask the server to send the list of
-     * users online to the client that requested it. The data is cleared afterwards in both cases.
-     */
-    public void checkData() {
-        switch (dataToReceiveFromClient.getType()) {
-            case ClackData.CONSTANT_LISTUSERS:
-                server.listUsers(this);
-                dataToReceiveFromClient = null;
-                break;
-            case ClackData.CONSTANT_USERNAME:
-                username = dataToReceiveFromClient.getUsername();
-                dataToReceiveFromClient = null;
-                break;
         }
     }
 

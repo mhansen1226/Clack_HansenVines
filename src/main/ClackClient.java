@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Scanner;
+
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 
@@ -141,7 +143,7 @@ public class ClackClient {
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
-    public void start(TextArea chat) {
+    public void start(TextArea chat, Label userList) {
         try {
             Socket skt = new Socket(hostName, port);
 
@@ -150,7 +152,7 @@ public class ClackClient {
 
             inFromStd = new Scanner(System.in);
 
-            Thread listener = new Thread( new ClientSideServerListener(this, chat) );
+            Thread listener = new Thread( new ClientSideServerListener(this, chat, userList) );
             listener.start();
 
             setDataToSendToServer(new MessageClackData(userName, userName, ClackData.CONSTANT_USERNAME));
@@ -223,9 +225,15 @@ public class ClackClient {
      * Method to print data.
      * @param chat
      */
-    public void printData(TextArea chat) {
+    public void printData(TextArea chat, Label userList) {
         if (dataToReceiveFromServer != null) {
-            chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
+            switch (dataToReceiveFromServer.getType()) {
+                case ClackData.CONSTANT_LISTUSERS:
+                    userList.setText(dataToReceiveFromServer.getData());
+                    break;
+                default:
+                    chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
+            }
             dataToReceiveFromServer = null;
         }
     }

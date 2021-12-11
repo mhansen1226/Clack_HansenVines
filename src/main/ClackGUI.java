@@ -47,7 +47,7 @@ public class ClackGUI extends Application {
         chat.setEditable(false);
         chat.setWrapText(true);
 
-        client.start(chat);
+        client.start(chat, userList);
 
         root.getChildren().addAll(userListDisplay, chat, inputBar);
 
