@@ -54,12 +54,12 @@ public class ServerSideClientIO implements Runnable {
 
             while(!closeConnection)
             {
-                server.listUsers();
-                dataToSendToClient = null;
                 receiveData();
                 if (dataToReceiveFromClient != null) {
                     server.broadcast(dataToReceiveFromClient);
                 }
+                server.listUsers();
+                dataToSendToClient = null;
             }
             inFromClient.close();
             outToClient.close();
