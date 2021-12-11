@@ -1,5 +1,8 @@
 package main;
 
+import data.ClackData;
+import data.FileClackData;
+import data.MessageClackData;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,14 +18,12 @@ import java.io.*;
 
 public class ClackGUI extends Application {
     private ClackClient client;
-    private String stylesheet;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        stylesheet = getClass().getResource("ClackStyle.css").toExternalForm();
+        String stylesheet = getClass().getResource("ClackStyle.css").toExternalForm();
         client = ClackClient.buildClient(getParameters().getRaw().toArray(new String[0]));
-        client.start();
 
         VBox root = new VBox();
 
@@ -44,6 +45,9 @@ public class ClackGUI extends Application {
         TextArea chat = new TextArea();
         chat.setId("chat");
         chat.setEditable(false);
+        chat.setWrapText(true);
+
+        client.start(chat);
 
         root.getChildren().addAll(userListDisplay, chat, inputBar);
 
@@ -51,25 +55,16 @@ public class ClackGUI extends Application {
         scene.getStylesheets().add(stylesheet);
 
         sendButton.setOnAction(event -> {
-            chat.appendText(messageBar.getText() + '\n');
+            client.setDataToSendToServer(new MessageClackData(client.getUserName(), messageBar.getText(), ClackData.CONSTANT_SENDFILE));
+            client.sendData();
             messageBar.clear();
         });
 
         mediaButton.setOnAction(event -> {
-            try {
-                File file = new FileChooser().showOpenDialog(primaryStage);
-
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                String line, out = "";
-
-                while ((line = br.readLine()) != null) {
-                    out += line + '\n';
-                }
-                chat.setText(chat.getText() + out);
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            File file = new FileChooser().showOpenDialog(primaryStage);
+            client.setDataToSendToServer(new FileClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDFILE));
+            client.readClientData(ClackData.CONSTANT_SENDFILE);
+            client.sendData();
         });
 
         primaryStage.setScene(scene);

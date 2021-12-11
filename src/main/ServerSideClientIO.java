@@ -53,9 +53,10 @@ public class ServerSideClientIO implements Runnable {
             while(!closeConnection)
             {
                 receiveData();
-                checkData();
-                if (dataToReceiveFromClient != null)
+                if (dataToReceiveFromClient != null){
+                    checkData();
                     server.broadcast(dataToReceiveFromClient);
+                }
             }
             inFromClient.close();
             outToClient.close();
@@ -89,12 +90,12 @@ public class ServerSideClientIO implements Runnable {
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
+                closeConnection = true;
+                server.remove(this);
+            }
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
-        }
-        if (dataToReceiveFromClient == null) {
-            closeConnection = true;
-            server.remove(this);
         }
     }
 

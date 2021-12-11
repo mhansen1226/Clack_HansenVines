@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Scanner;
-
+import javafx.scene.control.TextArea;
 
 
 /**
@@ -141,7 +141,7 @@ public class ClackClient {
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
-    public void start() {
+    public void start(TextArea chat) {
         try {
             Socket skt = new Socket(hostName, port);
 
@@ -150,20 +150,20 @@ public class ClackClient {
 
             inFromStd = new Scanner(System.in);
 
-            Thread listener = new Thread( new ClientSideServerListener(this) );
+            Thread listener = new Thread( new ClientSideServerListener(this, chat) );
             listener.start();
 
             setDataToSendToServer(new MessageClackData(userName, userName, ClackData.CONSTANT_USERNAME));
             sendData();
 
-            while (!closeConnection) {
-                readClientData();
-                sendData();
-            }
+//            while (!closeConnection) {
+//                readClientData();
+//                sendData();
+//            }
 
-            inFromServer.close();
-            outToServer.close();
-            skt.close();
+            //inFromServer.close();
+            //outToServer.close();
+            //skt.close();
 
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
@@ -175,26 +175,21 @@ public class ClackClient {
     /**
      * Read data passed from Standard.in
      */
-    public void readClientData() {
-        String input = inFromStd.next();
-        switch (input) {
-            case "DONE":
+    public void readClientData(int type) {
+        switch (type) {
+            case ClackData.CONSTANT_LOGOUT:
                 closeConnection = true;
                 dataToSendToServer = new MessageClackData(ClackData.CONSTANT_LOGOUT);
                 break;
-            case "SENDFILE":
-                dataToSendToServer = new FileClackData(userName, inFromStd.next(), ClackData.CONSTANT_SENDFILE);
+            case ClackData.CONSTANT_SENDFILE:
                 try {
                     ((FileClackData) dataToSendToServer).readFileContents();
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
                 }
                 break;
-            case "LISTUSERS":
+            case ClackData.CONSTANT_LISTUSERS:
                 dataToSendToServer = new MessageClackData(ClackData.CONSTANT_LISTUSERS);
-                break;
-            default:
-                dataToSendToServer = new MessageClackData(userName, input + inFromStd.nextLine(), ClackData.CONSTANT_SENDMESSAGE);
                 break;
         }
     }
@@ -224,11 +219,11 @@ public class ClackClient {
 
     /**
      * Method to print data.
+     * @param chat
      */
-    public void printData() {
+    public void printData(TextArea chat) {
         if (dataToReceiveFromServer != null) {
-            System.out.println(dataToReceiveFromServer.getUsername() + ":");
-            System.out.println("\t" + dataToReceiveFromServer.getData());
+            chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\t" + dataToReceiveFromServer.getData());
             dataToReceiveFromServer = null;
         }
     }
