@@ -10,8 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -21,6 +25,7 @@ import java.io.*;
 
 public class ClackGUI extends Application {
     private ClackClient client;
+    MediaPlayer media = null;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -51,9 +56,15 @@ public class ClackGUI extends Application {
         chat.setEditable(false);
         chat.setWrapText(true);
 
-        client.start(chat, userList);
+        HBox chatArea = new HBox(chat);
 
-        root.getChildren().addAll(userListDisplay, chat, inputBar);
+        MediaView mediaView = new MediaView(media);
+        chatArea.getChildren().add(mediaView);
+        mediaView.setFitWidth(300);
+
+        client.start(chat, userList, mediaView);
+
+        root.getChildren().addAll(userListDisplay, chatArea, inputBar);
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(stylesheet);
@@ -73,13 +84,13 @@ public class ClackGUI extends Application {
             File file = fileChooser.showOpenDialog(primaryStage);
             switch (file.getName().split("\\.")[1]) {
                 case "mp4":
-                    client.setDataToSendToServer(new MediaClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDMEDIA));
+                    client.setDataToSendToServer(new MediaClackData(client.getUserName(), file.getName(), ClackData.CONSTANT_SENDMEDIA));
                     break;
                 case "png":
                 case "jpg":
 
                 default:
-                    client.setDataToSendToServer(new FileClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDFILE));
+                    client.setDataToSendToServer(new FileClackData(client.getUserName(), file.getPath(), ClackData.CONSTANT_SENDFILE));
             }
             client.sendData();
         });
@@ -90,7 +101,6 @@ public class ClackGUI extends Application {
         });
 
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
         primaryStage.setTitle("Clack");
         primaryStage.show();
     }

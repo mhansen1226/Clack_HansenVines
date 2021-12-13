@@ -11,21 +11,21 @@ import java.util.Objects;
  * @author Matt Vines
  */
 public class MediaClackData extends ClackData  {
-    private String mediaFileName;
-    private Media media;
+    private String fileName;
+    private byte[] fileContents;
 
     /**
      * Creates an instance of MediaClackData according to user provided username, file name, and type.
      * File contents are set to null.
      *
      * @param username the client's username
-     * @param mediaFileName the file name
+     * @param fileName the file name
      * @param type     the type
      */
-    public MediaClackData(String username, String mediaFileName, int type) {
+    public MediaClackData(String username, String fileName, int type) {
         super(username, type);
-        this.mediaFileName = mediaFileName;
-        media = new Media(mediaFileName);
+        this.fileName = fileName;
+        this.fileContents = null;
     }
 
     /**
@@ -33,8 +33,9 @@ public class MediaClackData extends ClackData  {
      * File name and contents are set to null.
      */
     public MediaClackData() {
-        super(CONSTANT_SENDMEDIA);
-        this.mediaFileName = null;
+        super(CONSTANT_SENDFILE);
+        this.fileName = null;
+        this.fileContents = null;
     }
 
     /**
@@ -43,7 +44,7 @@ public class MediaClackData extends ClackData  {
      * @param fileName new file name
      */
     public void setFileName(String fileName) {
-        this.mediaFileName =  mediaFileName;
+        this.fileName = fileName;
     }
 
     /**
@@ -52,7 +53,7 @@ public class MediaClackData extends ClackData  {
      * @return file name
      */
     public String getFileName() {
-        return mediaFileName;
+        return fileName;
     }
 
     /**
@@ -60,59 +61,62 @@ public class MediaClackData extends ClackData  {
      *
      * @return the contents of the file
      */
+    public byte[] getData() {
+        return fileContents;
+    }
 
-
+    /**
+     * Takes in data and decrypts
+     * @param key take a key as input
+     * @return returns decrypted data
+     */
     public String getData(String key) {
-        return media.toString();
-    }
-
-    public Media getData() {
-        return media;
-    }
-
-
-
-    /**
-     * Overrides Object.equals()
-     *
-     * @param other any object
-     *
-     * @return boolean value that returns true iff the object is an instance of FileClackData with
-     *         an equivalent file name, file contents, type, and username
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) return false;
-        if (!(other instanceof MediaClackData)) return false;
-        MediaClackData otherFCD = (MediaClackData) other;
-        return (mediaFileName.equals(otherFCD.mediaFileName) &&
-                media.equals(otherFCD.media) &&
-                getType() == otherFCD.getType() &&
-                getUsername().equals(otherFCD.getUsername()));
+        return fileContents.toString();
     }
 
     /**
-     * Overrides Object.hashCode()
-     *
-     * @return returns an integer specific to FileClackData objects according to the data contained within them
+     * Read the contents of the file
      */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 37 * result + Objects.hash(mediaFileName);
-        result = 37 * result + Objects.hash(media);
-        return result;
+    public void readFileContents() throws IOException {
+        try {
+            File file = new File(fileName);
+            BufferedInputStream is = new BufferedInputStream(new FileInputStream(file));
+            fileContents = new byte[(int) file.length()];
+            is.read(fileContents,0, (int) file.length());
+
+        } catch (NullPointerException npe) {
+            System.err.println("No file name was provided");
+        } catch (FileNotFoundException fnfe)  {
+            System.err.println("File not found");
+        } catch (IOException ioe) {
+            throw new IOException("Issue with reading");
+        }
+    }
+
+    public void readFileContents(String key) throws IOException {
+        readFileContents();
     }
 
     /**
-     * Overrides Object.toString()
+     * writes non-decrypted file contents to the file
      *
-     * @return String displaying all data contained within the instance of FileClackData
      */
-    @Override
-    public String toString() {
-        return super.toString() + "\n" +
-                "File name: " + mediaFileName + "\n" +
-                "File Contents: " + media.toString();
+    public void writeFileContents() {
+        FileOutputStream os;
+        try{
+            os = new FileOutputStream(fileName);
+            os.write(fileContents);
+            os.close();
+        }catch (IOException ioe){
+            System.err.println("My message is: "+ ioe.getMessage());
+        }
+    }
+
+    /**
+     * Writes the decrypted file contents to the file
+     * @param key Takes key as input
+     */
+    public void writeFileContents(String key){
+        writeFileContents();
     }
 }

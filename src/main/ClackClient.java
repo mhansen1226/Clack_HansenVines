@@ -1,6 +1,7 @@
 package main;
 
 
+
 import data.*;
 
 import java.io.IOException;
@@ -8,11 +9,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Objects;
-import java.util.Scanner;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
@@ -145,14 +145,14 @@ public class ClackClient {
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
-    public void start(TextArea chat, TextField userList) {
+    public void start(TextArea chat, TextField userList, MediaView mediaView) {
         try {
             Socket skt = new Socket(hostName, port);
 
             outToServer = new ObjectOutputStream(skt.getOutputStream());
             inFromServer = new ObjectInputStream(skt.getInputStream());
 
-            Thread listener = new Thread( new ClientSideServerListener(this, chat, userList) );
+            Thread listener = new Thread( new ClientSideServerListener(this, chat, userList, mediaView) );
             listener.start();
 
             setDataToSendToServer(new MessageClackData(userName, userName, ClackData.CONSTANT_USERNAME));
@@ -190,6 +190,13 @@ public class ClackClient {
                     System.err.println(e.getMessage());
                 }
                 break;
+            case ClackData.CONSTANT_SENDMEDIA:
+                try {
+                    ((MediaClackData) dataToSendToServer).readFileContents();
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+                break;
             case ClackData.CONSTANT_LISTUSERS:
                 dataToSendToServer = new MessageClackData(ClackData.CONSTANT_LISTUSERS);
                 break;
@@ -216,6 +223,9 @@ public class ClackClient {
     public void receiveData() {
         try {
             dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+            if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDMEDIA) {
+                ((MediaClackData) dataToReceiveFromServer).writeFileContents();
+            }
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -223,9 +233,8 @@ public class ClackClient {
 
     /**
      * Method to print data.
-     * @param chat
      */
-    public void printData(TextArea chat, TextField userList) {
+    public void printData(TextArea chat, TextField userList, MediaView media) {
         if (dataToReceiveFromServer != null) {
             switch (dataToReceiveFromServer.getType()) {
                 case ClackData.CONSTANT_LISTUSERS:
@@ -233,8 +242,11 @@ public class ClackClient {
                     break;
 
                 case ClackData.CONSTANT_SENDMEDIA:
+                    MediaPlayer mp = new MediaPlayer(new Media(getClass().getResource(((MediaClackData) dataToReceiveFromServer).getFileName()).toExternalForm()));
+                    mp.setAutoPlay(true);
+                    media.setMediaPlayer(mp);
 
-
+                    break;
                 default:
                     chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
             }
