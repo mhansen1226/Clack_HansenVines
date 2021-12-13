@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -40,7 +41,8 @@ public class ClackGUI extends Application {
         HBox inputBar = new HBox(mediaButton, messageBar, sendButton);
 
         Label userLabel = new Label("Online: ");
-        Label userList = new Label();
+        TextField userList = new TextField();
+        userList.setEditable(false);
 
         HBox userListDisplay = new HBox(userLabel, userList);
 

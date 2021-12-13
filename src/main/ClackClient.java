@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
@@ -144,7 +145,7 @@ public class ClackClient {
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
-    public void start(TextArea chat, Label userList) {
+    public void start(TextArea chat, TextField userList) {
         try {
             Socket skt = new Socket(hostName, port);
 
@@ -224,16 +225,16 @@ public class ClackClient {
      * Method to print data.
      * @param chat
      */
-    public void printData(TextArea chat, Label userList) {
+    public void printData(TextArea chat, TextField userList) {
         if (dataToReceiveFromServer != null) {
             switch (dataToReceiveFromServer.getType()) {
-                case ClackData.CONSTANT_LISTUSERS: {
+                case ClackData.CONSTANT_LISTUSERS:
                     userList.setText(dataToReceiveFromServer.getData());
                     break;
-                }
-                case ClackData.CONSTANT_SENDMEDIA: {
 
-                }
+                case ClackData.CONSTANT_SENDMEDIA:
+
+
                 default:
                     chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
             }

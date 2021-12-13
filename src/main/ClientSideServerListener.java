@@ -2,6 +2,7 @@ package main;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 /**
  * Class that waits for data from the server and prints it to the client. Implements the runnable class.
@@ -10,13 +11,13 @@ public class ClientSideServerListener implements Runnable {
 
     private ClackClient client;
     private TextArea chat;
-    private Label userList;
+    private TextField userList;
 
     /**
      * Constructor that instantiates the client based on user input
      * @param client the client
      */
-    public ClientSideServerListener(ClackClient client, TextArea chat, Label userList) {
+    public ClientSideServerListener(ClackClient client, TextArea chat, TextField userList) {
         this.client = client;
         this.chat = chat;
         this.userList = userList;
