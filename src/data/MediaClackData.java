@@ -1,9 +1,7 @@
 package data;
 
-import javafx.scene.media.Media;
 
 import java.io.*;
-import java.util.Objects;
 
 /**
  * Subclass of ClackData that is used to deal with sending media files. Can be of type CONSTANT_MEDIAFILE.

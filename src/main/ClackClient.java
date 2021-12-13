@@ -242,7 +242,7 @@ public class ClackClient {
                     break;
 
                 case ClackData.CONSTANT_SENDMEDIA:
-                    MediaPlayer mp = new MediaPlayer(new Media(getClass().getResource(((MediaClackData) dataToReceiveFromServer).getFileName()).toExternalForm()));
+                    MediaPlayer mp = new MediaPlayer(new Media(((MediaClackData) dataToReceiveFromServer).getFileName()));
                     mp.setAutoPlay(true);
                     media.setMediaPlayer(mp);
 
