@@ -60,12 +60,14 @@ public class MediaClackData extends ClackData  {
      *
      * @return the contents of the file
      */
+
+
     public String getData(String key) {
         return media.toString();
     }
 
-    public String getData() {
-        return media.toString();
+    public Media getData() {
+        return media;
     }
 
 

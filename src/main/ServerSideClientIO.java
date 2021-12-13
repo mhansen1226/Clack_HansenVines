@@ -53,11 +53,10 @@ public class ServerSideClientIO implements Runnable {
             outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 
             receiveData(); // get username
+            server.listUsers();
 
             while(!closeConnection)
             {
-                server.listUsers();
-                dataToSendToClient = null;
                 receiveData();
                 if (dataToReceiveFromClient != null) {
                     server.broadcast(dataToReceiveFromClient);

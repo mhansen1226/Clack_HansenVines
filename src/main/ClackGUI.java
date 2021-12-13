@@ -2,6 +2,7 @@ package main;
 
 import data.ClackData;
 import data.FileClackData;
+import data.MediaClackData;
 import data.MessageClackData;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -37,10 +39,10 @@ public class ClackGUI extends Application {
 
         HBox inputBar = new HBox(mediaButton, messageBar, sendButton);
 
-        Label userLable = new Label("Online: ");
+        Label userLabel = new Label("Online: ");
         Label userList = new Label();
 
-        HBox userListDisplay = new HBox(userLable, userList);
+        HBox userListDisplay = new HBox(userLabel, userList);
 
         TextArea chat = new TextArea();
         chat.setId("chat");
@@ -61,8 +63,22 @@ public class ClackGUI extends Application {
         });
 
         mediaButton.setOnAction(event -> {
-            File file = new FileChooser().showOpenDialog(primaryStage);
-            client.setDataToSendToServer(new FileClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDFILE));
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new ExtensionFilter("Text Files", "*.txt"),
+                    new ExtensionFilter("Image Files", "*.png", "*.jpg"),
+                    new ExtensionFilter("Media Files", "*.mp4"));
+            File file = fileChooser.showOpenDialog(primaryStage);
+            switch (file.getName().split("\\.")[1]) {
+                case "mp4":
+                    client.setDataToSendToServer(new MediaClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDMEDIA));
+                    break;
+                case "png":
+                case "jpg":
+
+                default:
+                    client.setDataToSendToServer(new FileClackData(client.getUserName(),file.getPath(),ClackData.CONSTANT_SENDFILE));
+            }
             client.sendData();
         });
 

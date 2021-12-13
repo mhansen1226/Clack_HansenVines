@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 
 /**
@@ -30,7 +32,6 @@ public class ClackClient {
     private boolean closeConnection;
     private ClackData dataToSendToServer;
     private ClackData dataToReceiveFromServer;
-    private Scanner inFromStd;
     private ObjectOutputStream outToServer;
     private ObjectInputStream inFromServer;
 
@@ -150,8 +151,6 @@ public class ClackClient {
             outToServer = new ObjectOutputStream(skt.getOutputStream());
             inFromServer = new ObjectInputStream(skt.getInputStream());
 
-            inFromStd = new Scanner(System.in);
-
             Thread listener = new Thread( new ClientSideServerListener(this, chat, userList) );
             listener.start();
 
@@ -228,9 +227,13 @@ public class ClackClient {
     public void printData(TextArea chat, Label userList) {
         if (dataToReceiveFromServer != null) {
             switch (dataToReceiveFromServer.getType()) {
-                case ClackData.CONSTANT_LISTUSERS:
+                case ClackData.CONSTANT_LISTUSERS: {
                     userList.setText(dataToReceiveFromServer.getData());
                     break;
+                }
+                case ClackData.CONSTANT_SENDMEDIA: {
+
+                }
                 default:
                     chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
             }
@@ -247,7 +250,7 @@ public class ClackClient {
     }
 
     /**
-     * A get method foe the host name
+     * A get method for the host name
      * @return returns host name
      */
     public String getHostName() {

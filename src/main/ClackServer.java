@@ -100,6 +100,8 @@ public class ClackServer {
         serverSideClientIOList.remove(sscio);
         if (serverSideClientIOList.size() == 0)
             closeConnection = true;
+        else
+            listUsers();
     }
 
     /**
