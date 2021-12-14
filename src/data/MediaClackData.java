@@ -102,7 +102,7 @@ public class MediaClackData extends ClackData  {
     public void writeFileContents() {
         FileOutputStream os;
         try{
-            os = new FileOutputStream("src/" +fileName);
+            os = new FileOutputStream("src/main/" +fileName);
             os.write(fileContents);
 
             os.close();
