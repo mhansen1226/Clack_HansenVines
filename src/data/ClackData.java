@@ -21,7 +21,8 @@ public abstract class ClackData implements Serializable {
     public static final int CONSTANT_SENDFILE = 3;      // send a file
     public static final int CONSTANT_USERNAME = 4;
     public static final int DEFAULT_TYPE = -1;          // invalid type to show something went wrong
-    public static final int CONSTANT_SENDMEDIA =5;      // Send a media file
+    public static final int CONSTANT_SENDVIDEO =5;      // Send a media file
+    public static final int CONSTANT_SENDPICTURE =6;      // Send a picture
 
     /**
      * Constructor creates an instance of ClackData based on user-provided username and type. The date is automatically

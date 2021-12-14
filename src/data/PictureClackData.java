@@ -1,7 +1,6 @@
 package data;
 
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
 
 import java.util.Objects;
 
@@ -31,7 +30,7 @@ public class PictureClackData extends ClackData  {
      * File name and contents are set to null.
      */
     public PictureClackData() {
-        super(CONSTANT_SENDMEDIA);
+        super(CONSTANT_SENDVIDEO);
         this.picture = null;
     }
 

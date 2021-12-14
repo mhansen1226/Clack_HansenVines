@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import data.MediaClackData;
+import data.MessageClackData;
 import javafx.scene.control.Label;
 
 /**
@@ -28,7 +31,7 @@ public class ServerSideClientIO implements Runnable {
      * Constructer that creates an instance of ServerSideClientIO based on user input for server and clientSocket.
      * closeConnection is set to false and all other instance variables are null.
      *
-     * @param server the server that created the instance
+     * @param server       the server that created the instance
      * @param clientSocket the socket connected to the client
      */
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
@@ -55,8 +58,7 @@ public class ServerSideClientIO implements Runnable {
             receiveData(); // get username
             server.listUsers();
 
-            while(!closeConnection)
-            {
+            while (!closeConnection) {
                 receiveData();
                 if (dataToReceiveFromClient != null) {
                     server.broadcast(dataToReceiveFromClient);
@@ -94,6 +96,7 @@ public class ServerSideClientIO implements Runnable {
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+
             switch (dataToReceiveFromClient.getType()) {
                 case ClackData.CONSTANT_USERNAME:
                     username = dataToReceiveFromClient.getUsername();
@@ -104,6 +107,9 @@ public class ServerSideClientIO implements Runnable {
                     dataToReceiveFromClient = null;
                     server.remove(this);
                     break;
+                case ClackData.CONSTANT_SENDVIDEO:
+                    System.out.println(((MediaClackData) dataToReceiveFromClient).fileContents.length);
+
             }
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());

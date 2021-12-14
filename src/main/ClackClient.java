@@ -4,10 +4,12 @@ package main;
 
 import data.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Objects;
 
 import javafx.scene.control.TextArea;
@@ -190,7 +192,7 @@ public class ClackClient {
                     System.err.println(e.getMessage());
                 }
                 break;
-            case ClackData.CONSTANT_SENDMEDIA:
+            case ClackData.CONSTANT_SENDVIDEO:
                 try {
                     ((MediaClackData) dataToSendToServer).readFileContents();
                 } catch (IOException e) {
@@ -223,7 +225,9 @@ public class ClackClient {
     public void receiveData() {
         try {
             dataToReceiveFromServer = (ClackData) inFromServer.readObject();
-            if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDMEDIA) {
+            if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDVIDEO) {
+                System.out.println("AAA");
+                System.out.println(((MediaClackData) dataToReceiveFromServer).fileContents.length);
                 ((MediaClackData) dataToReceiveFromServer).writeFileContents();
             }
         } catch (IOException | ClassNotFoundException ioe) {
@@ -241,8 +245,11 @@ public class ClackClient {
                     userList.setText(dataToReceiveFromServer.getData());
                     break;
 
-                case ClackData.CONSTANT_SENDMEDIA:
-                    MediaPlayer mp = new MediaPlayer(new Media(getClass().getResource(((MediaClackData) dataToReceiveFromServer).getFileName()).toExternalForm()));
+                case ClackData.CONSTANT_SENDVIDEO:
+                    File file = new File(((MediaClackData) dataToReceiveFromServer).getFileName());
+                    String path = Arrays.toString(file.toURI().toString().split(" "));
+                    path = path.substring(1,path.length()-1);
+                    MediaPlayer mp = new MediaPlayer(new Media(path));
                     mp.setAutoPlay(true);
                     media.setMediaPlayer(mp);
 

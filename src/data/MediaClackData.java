@@ -2,15 +2,19 @@ package data;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Subclass of ClackData that is used to deal with sending media files. Can be of type CONSTANT_MEDIAFILE.
  *
  * @author Matt Vines
  */
-public class MediaClackData extends ClackData  {
+public class MediaClackData extends ClackData {
+    private String fileInPath;
     private String fileName;
-    private byte[] fileContents;
+    public byte[] fileContents;
 
     /**
      * Creates an instance of MediaClackData according to user provided username, file name, and type.
@@ -18,10 +22,13 @@ public class MediaClackData extends ClackData  {
      *
      * @param username the client's username
      * @param fileName the file name
+     * @param fileInPath the file-in path
      * @param type     the type
      */
-    public MediaClackData(String username, String fileName, int type) {
+    public MediaClackData(String username, String fileInPath, String fileName, int type) {
         super(username, type);
+
+        this.fileInPath = fileInPath;
         this.fileName = fileName;
         this.fileContents = null;
     }
@@ -65,6 +72,7 @@ public class MediaClackData extends ClackData  {
 
     /**
      * Takes in data and decrypts
+     *
      * @param key take a key as input
      * @return returns decrypted data
      */
@@ -77,14 +85,14 @@ public class MediaClackData extends ClackData  {
      */
     public void readFileContents() throws IOException {
         try {
-            File file = new File(fileName);
+            File file = new File(fileInPath);
             BufferedInputStream is = new BufferedInputStream(new FileInputStream(file));
             fileContents = new byte[(int) file.length()];
             is.read(fileContents,0, (int) file.length());
 
         } catch (NullPointerException npe) {
             System.err.println("No file name was provided");
-        } catch (FileNotFoundException fnfe)  {
+        } catch (FileNotFoundException fnfe) {
             System.err.println("File not found");
         } catch (IOException ioe) {
             throw new IOException("Issue with reading");
@@ -97,26 +105,26 @@ public class MediaClackData extends ClackData  {
 
     /**
      * writes non-decrypted file contents to the file
-     *
      */
     public void writeFileContents() {
         FileOutputStream os;
-        try{
-            os = new FileOutputStream("src/main/" +fileName);
+        try {
+            os = new FileOutputStream(fileName);
             os.write(fileContents);
-
+            os.flush();
             os.close();
-        }catch (IOException ioe){
-            System.err.println("My message is: "+ ioe.getMessage());
+        } catch (IOException ioe) {
+            System.err.println("My message is: " + ioe.getMessage());
         }
 
     }
 
     /**
      * Writes the decrypted file contents to the file
+     *
      * @param key Takes key as input
      */
-    public void writeFileContents(String key){
+    public void writeFileContents(String key) {
         writeFileContents();
     }
 }

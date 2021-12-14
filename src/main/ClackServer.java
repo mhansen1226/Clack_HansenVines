@@ -74,7 +74,6 @@ public class ClackServer {
                 new Thread(sscio).start();
             }
             skt.close();
-
         } catch (IOException ioe) {
            System.err.println(ioe.getMessage());
         }
