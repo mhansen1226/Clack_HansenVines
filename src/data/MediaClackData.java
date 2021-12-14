@@ -27,7 +27,6 @@ public class MediaClackData extends ClackData {
      */
     public MediaClackData(String username, String fileInPath, String fileName, int type) {
         super(username, type);
-
         this.fileInPath = fileInPath;
         this.fileName = fileName;
         this.fileContents = null;
