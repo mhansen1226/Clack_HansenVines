@@ -226,8 +226,6 @@ public class ClackClient {
         try {
             dataToReceiveFromServer = (ClackData) inFromServer.readObject();
             if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDVIDEO) {
-                System.out.println("AAA");
-                System.out.println(((MediaClackData) dataToReceiveFromServer).fileContents.length);
                 ((MediaClackData) dataToReceiveFromServer).writeFileContents();
             }
         } catch (IOException | ClassNotFoundException ioe) {
