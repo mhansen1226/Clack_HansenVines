@@ -102,12 +102,14 @@ public class MediaClackData extends ClackData  {
     public void writeFileContents() {
         FileOutputStream os;
         try{
-            os = new FileOutputStream(fileName);
+            os = new FileOutputStream("src/" +fileName);
             os.write(fileContents);
+
             os.close();
         }catch (IOException ioe){
             System.err.println("My message is: "+ ioe.getMessage());
         }
+
     }
 
     /**
