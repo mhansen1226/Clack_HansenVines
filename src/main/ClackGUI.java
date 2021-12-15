@@ -6,10 +6,7 @@ import data.MediaClackData;
 import data.MessageClackData;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -71,7 +68,7 @@ public class ClackGUI extends Application {
         imageView.setFitWidth(300);
         imageView.setPreserveRatio(true);
 
-        VBox mediaBar = new VBox(mediaView, imageView);
+        ScrollPane mediaBar = new ScrollPane(new VBox(mediaView, imageView));
 
         HBox chatArea = new HBox(chat, mediaBar);
 

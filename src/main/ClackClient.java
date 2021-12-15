@@ -240,7 +240,8 @@ public class ClackClient {
      *
      * @param chat the text that prints
      * @param userList the text that builds the user list
-     * @param media Video that sends
+     * @param mediaView Video that sends
+     * @param imageView Image that sends
      */
     public void printData(TextArea chat, TextField userList, MediaView mediaView, ImageView imageView) {
         File file;

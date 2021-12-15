@@ -18,7 +18,7 @@ HBox, VBox {
     -fx-font-family: "Arial Black";
 }
 
-.text-area, .label, .button{
+.text-area, .text-field, .label, .button{
     -fx-text-fill: whitesmoke;
 }
 
@@ -33,6 +33,26 @@ HBox, VBox {
 .text-area:focused {
     -fx-focus-color: whitesmoke;
     -fx-faint-focus-color: whitesmoke;
+}
+
+.text-field {
+    -fx-background-color: -black;
+}
+.text-field .content {
+    -fx-background-color: derive(-black, 30%);
+    -fx-background-radius: 0;
+}
+
+.text-field:focused {
+    -fx-focus-color: whitesmoke;
+    -fx-faint-focus-color: whitesmoke;
+}
+.scroll-pane {
+    -fx-background-color: -black;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: -black;
+    -fx-background-radius: 0;
 }
 
 .button {
@@ -60,8 +80,3 @@ HBox, VBox {
 #messageBar, .button {
     -fx-max-height: 40;
 }
-
-#messageBar {
-
-}
-
