@@ -47,6 +47,8 @@ public class ClackClient {
      * @param userName the client username
      * @param hostName the host name
      * @param port     port number
+     * @throws IllegalArgumentException
+     * @throws
      */
 
     public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException {
@@ -103,7 +105,7 @@ public class ClackClient {
 
     /**
      * Main method
-     *
+     * Builds the client class
      * @param args optional argument to pass to client in the form "username@hostname:portnumber"
      *             can be truncated
      */
@@ -147,7 +149,10 @@ public class ClackClient {
     }
 
     /**
-     * Calls readClientData and printData in a loop until DONE is passes from System.in
+     * Method to start the code
+     * Starts a socket when the user joins
+     * sets the data to send to server
+     *
      */
     public void start(TextArea chat, TextField userList, MediaView mediaView, ImageView imageView) {
         try {
@@ -162,15 +167,6 @@ public class ClackClient {
             setDataToSendToServer(new MessageClackData(userName, userName, ClackData.CONSTANT_USERNAME));
             sendData();
 
-//            while (!closeConnection) {
-//                readClientData();
-//                sendData();
-//            }
-
-            //inFromServer.close();
-            //outToServer.close();
-            //skt.close();
-
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -180,6 +176,7 @@ public class ClackClient {
 
     /**
      * Read data passed from Standard.in
+     * Decides the type of data and passes to server
      */
     private void readClientData(int type) {
         switch (type) {
@@ -209,7 +206,8 @@ public class ClackClient {
         }
     }
     /**
-     * Method to send data.
+     * Method to send data to server
+     *
      */
     public void sendData() {
         readClientData(dataToSendToServer.getType());
@@ -223,7 +221,8 @@ public class ClackClient {
     }
 
     /**
-     *Method to receive data. Will be implemented later
+     *Method to receive data.
+     * Brings in data from server
      */
     public void receiveData() {
         try {
@@ -238,6 +237,10 @@ public class ClackClient {
 
     /**
      * Method to print data.
+     *
+     * @param chat the text that prints
+     * @param userList the text that builds the user list
+     * @param media Video that sends
      */
     public void printData(TextArea chat, TextField userList, MediaView mediaView, ImageView imageView) {
         File file;

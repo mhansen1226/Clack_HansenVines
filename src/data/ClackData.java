@@ -93,7 +93,7 @@ public abstract class ClackData implements Serializable {
      *
      * @param inputStringToDecrypt  string to decrypt
      * @param key                   key used to decrypt
-     * @return                      Decrypted string
+     * @return                     Decrypted string
      */
     protected String decrypt(String inputStringToDecrypt, String key) {
         char[] cString = inputStringToDecrypt.toCharArray();
@@ -147,7 +147,18 @@ public abstract class ClackData implements Serializable {
         return date;
     }
 
+    /**
+     * Abstract method to implement to extend class data
+     * @param <T>
+     * @return
+     */
     public abstract <T> T getData();
+
+    /**
+     * Abstract method to implement to extend class data
+     * @param key
+     * @return
+     */
     public abstract String getData(String key);
 
     /**

@@ -48,6 +48,7 @@ public class ServerSideClientIO implements Runnable {
     /**
      * Implements run() from the Runnable class. Opens input and output streams from th client socket and reads and
      * sends data from and to the client.
+     * @throws IOException
      */
     @Override
     public void run() {

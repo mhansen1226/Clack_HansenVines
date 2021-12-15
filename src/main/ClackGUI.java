@@ -22,12 +22,19 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
-
+/**
+ * Class that handles the GUI for the project
+ */
 public class ClackGUI extends Application {
     private ClackClient client;
     MediaPlayer media = null;
     Image image = null;
 
+    /**
+     * Start method to start the GUI when the client joins the server
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -112,6 +119,10 @@ public class ClackGUI extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Main method
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }

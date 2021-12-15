@@ -13,8 +13,8 @@ public class PictureClackData extends ClackData  {
     private Image picture;
 
     /**
-     * Creates an instance of MediaClackData according to user provided username, file name, and type.
-     * File contents are set to null.
+     * Creates an instance of PictureClackData according to user provided username, picture , and type.
+     * Sets picture
      *
      * @param username the client's username
      * @param picture the picture
@@ -26,8 +26,8 @@ public class PictureClackData extends ClackData  {
     }
 
     /**
-     * Default constructor for MediaClackData creates an anonymous user ("Anon") in send file type.
-     * File name and contents are set to null.
+     * Default constructor for PictureClackData creates a picture.
+     * picture is set to null
      */
     public PictureClackData() {
         super(CONSTANT_SENDVIDEO);
@@ -35,7 +35,7 @@ public class PictureClackData extends ClackData  {
     }
 
     /**
-     * File name mutator
+     * Methos to set the image
      *
      * @param picture image
      */
@@ -44,9 +44,8 @@ public class PictureClackData extends ClackData  {
     }
 
     /**
-     * File name accessor
-     *
-     * @return file name
+     * Image accessor class
+     * @return the picture
      */
     public Image getPicture() {
         return picture;
@@ -54,13 +53,17 @@ public class PictureClackData extends ClackData  {
 
     /**
      * Data accessor
-     *
-     * @return the contents of the file
+     * @param key takes in the object key
+     * @return the picture contents
      */
     public String getData(String key) {
         return picture.toString();
     }
 
+    /**
+     * Data accessor
+     * @return the pictue to a string
+     */
     public String getData() {
         return picture.toString();
     }
