@@ -12,7 +12,7 @@ import java.io.*;
 public class MediaClackData extends ClackData {
     private String fileInPath;
     private String fileName;
-    public byte[] fileContents;
+    private byte[] fileContents;
 
     /**
      * Creates an instance of MediaClackData according to user provided username, file name, and type.
