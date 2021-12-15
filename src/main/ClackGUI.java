@@ -97,9 +97,12 @@ public class ClackGUI extends Application {
             File file = fileChooser.showOpenDialog(primaryStage);
             switch (file.getName().substring(file.getName().length()-3)) {
                 case "mp4":
+                case "MP4":
                     client.setDataToSendToServer(new MediaClackData(client.getUserName(), file.getPath(), file.getName(), ClackData.CONSTANT_SENDVIDEO));
                     break;
                 case "png":
+                case "PNG":
+                case "JPG":
                 case "jpg":
                     client.setDataToSendToServer(new MediaClackData(client.getUserName(), file.getPath(), file.getName(), ClackData.CONSTANT_SENDPICTURE));
                     break;
