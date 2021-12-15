@@ -2,6 +2,7 @@ package main;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
@@ -14,16 +15,18 @@ public class ClientSideServerListener implements Runnable {
     private TextArea chat;
     private TextField userList;
     private MediaView mediaView;
+    private ImageView imageView;
 
     /**
      * Constructor that instantiates the client based on user input
      * @param client the client
      */
-    public ClientSideServerListener(ClackClient client, TextArea chat, TextField userList, MediaView mediaView) {
+    public ClientSideServerListener(ClackClient client, TextArea chat, TextField userList, MediaView mediaView, ImageView imageView) {
         this.client = client;
         this.chat = chat;
         this.userList = userList;
         this.mediaView = mediaView;
+        this.imageView = imageView;
     }
 
     /**
@@ -33,7 +36,7 @@ public class ClientSideServerListener implements Runnable {
     public void run() {
         while (!client.getCloseConnection()) {
             client.receiveData();
-            client.printData(chat, userList, mediaView);
+            client.printData(chat, userList, mediaView, imageView);
         }
     }
 }

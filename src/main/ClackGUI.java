@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -24,6 +26,7 @@ import java.io.*;
 public class ClackGUI extends Application {
     private ClackClient client;
     MediaPlayer media = null;
+    Image image = null;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,13 +57,18 @@ public class ClackGUI extends Application {
         chat.setEditable(false);
         chat.setWrapText(true);
 
-        HBox chatArea = new HBox(chat);
-
         MediaView mediaView = new MediaView(media);
-        chatArea.getChildren().add(mediaView);
         mediaView.setFitWidth(300);
 
-        client.start(chat, userList, mediaView);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(300);
+        imageView.setPreserveRatio(true);
+
+        VBox mediaBar = new VBox(mediaView, imageView);
+
+        HBox chatArea = new HBox(chat, mediaBar);
+
+        client.start(chat, userList, mediaView, imageView);
 
         root.getChildren().addAll(userListDisplay, chatArea, inputBar);
 
@@ -80,13 +88,14 @@ public class ClackGUI extends Application {
                     new ExtensionFilter("Image Files", "*.png", "*.jpg"),
                     new ExtensionFilter("Media Files", "*.mp4"));
             File file = fileChooser.showOpenDialog(primaryStage);
-            switch (file.getName().split("\\.")[1]) {
+            switch (file.getName().substring(file.getName().length()-3)) {
                 case "mp4":
                     client.setDataToSendToServer(new MediaClackData(client.getUserName(), file.getPath(), file.getName(), ClackData.CONSTANT_SENDVIDEO));
                     break;
                 case "png":
                 case "jpg":
-
+                    client.setDataToSendToServer(new MediaClackData(client.getUserName(), file.getPath(), file.getName(), ClackData.CONSTANT_SENDPICTURE));
+                    break;
                 default:
                     client.setDataToSendToServer(new FileClackData(client.getUserName(), file.getPath(), ClackData.CONSTANT_SENDFILE));
             }

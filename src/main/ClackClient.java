@@ -14,6 +14,8 @@ import java.util.Objects;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -147,14 +149,14 @@ public class ClackClient {
     /**
      * Calls readClientData and printData in a loop until DONE is passes from System.in
      */
-    public void start(TextArea chat, TextField userList, MediaView mediaView) {
+    public void start(TextArea chat, TextField userList, MediaView mediaView, ImageView imageView) {
         try {
             Socket skt = new Socket(hostName, port);
 
             outToServer = new ObjectOutputStream(skt.getOutputStream());
             inFromServer = new ObjectInputStream(skt.getInputStream());
 
-            Thread listener = new Thread( new ClientSideServerListener(this, chat, userList, mediaView) );
+            Thread listener = new Thread( new ClientSideServerListener(this, chat, userList, mediaView, imageView) );
             listener.start();
 
             setDataToSendToServer(new MessageClackData(userName, userName, ClackData.CONSTANT_USERNAME));
@@ -192,6 +194,7 @@ public class ClackClient {
                     System.err.println(e.getMessage());
                 }
                 break;
+            case ClackData.CONSTANT_SENDPICTURE:
             case ClackData.CONSTANT_SENDVIDEO:
                 try {
                     ((MediaClackData) dataToSendToServer).readFileContents();
@@ -225,7 +228,7 @@ public class ClackClient {
     public void receiveData() {
         try {
             dataToReceiveFromServer = (ClackData) inFromServer.readObject();
-            if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDVIDEO) {
+            if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDVIDEO || dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDPICTURE) {
                 ((MediaClackData) dataToReceiveFromServer).writeFileContents();
             }
         } catch (IOException | ClassNotFoundException ioe) {
@@ -236,22 +239,27 @@ public class ClackClient {
     /**
      * Method to print data.
      */
-    public void printData(TextArea chat, TextField userList, MediaView media) {
+    public void printData(TextArea chat, TextField userList, MediaView mediaView, ImageView imageView) {
+        File file;
+        String path;
         if (dataToReceiveFromServer != null) {
             switch (dataToReceiveFromServer.getType()) {
                 case ClackData.CONSTANT_LISTUSERS:
                     userList.setText(dataToReceiveFromServer.getData());
                     break;
-
                 case ClackData.CONSTANT_SENDVIDEO:
-                    File file = new File(((MediaClackData) dataToReceiveFromServer).getFileName());
-                    String path = Arrays.toString(file.toURI().toString().split(" "));
+                    file = new File(((MediaClackData) dataToReceiveFromServer).getFileName());
+                    path = Arrays.toString(file.toURI().toString().split(" "));
                     path = path.substring(1,path.length()-1);
                     MediaPlayer mp = new MediaPlayer(new Media(path));
                     mp.setAutoPlay(true);
-                    media.setMediaPlayer(mp);
-
+                    mediaView.setMediaPlayer(mp);
                     break;
+                case ClackData.CONSTANT_SENDPICTURE:
+                    file = new File(((MediaClackData) dataToReceiveFromServer).getFileName());
+                    path = Arrays.toString(file.toURI().toString().split(" "));
+                    path = path.substring(1,path.length()-1);
+                    imageView.setImage(new Image(path));
                 default:
                     chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
             }

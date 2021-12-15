@@ -107,9 +107,6 @@ public class ServerSideClientIO implements Runnable {
                     dataToReceiveFromClient = null;
                     server.remove(this);
                     break;
-                case ClackData.CONSTANT_SENDVIDEO:
-
-
             }
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());

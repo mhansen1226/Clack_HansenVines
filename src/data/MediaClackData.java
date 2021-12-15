@@ -2,9 +2,7 @@ package data;
 
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 
 /**
  * Subclass of ClackData that is used to deal with sending media files. Can be of type CONSTANT_MEDIAFILE.
