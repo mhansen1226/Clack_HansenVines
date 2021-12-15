@@ -263,6 +263,7 @@ public class ClackClient {
                     path = Arrays.toString(file.toURI().toString().split(" "));
                     path = path.substring(1,path.length()-1);
                     imageView.setImage(new Image(path));
+                    break;
                 default:
                     chat.appendText(dataToReceiveFromServer.getUsername() + ":" + "\n\t" + dataToReceiveFromServer.getData() + "\n");
             }
